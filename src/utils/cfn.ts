@@ -50,7 +50,7 @@ class CfnParser {
 
   parse = (): void => {
     try {
-      const f = fs.readFileSync(this.config.cfn_path, 'utf8');
+      const f = fs.readFileSync(this.config.cfnPath, 'utf8');
 
       // TODO: Handle json files too
       const cfn = yaml.safeLoad(f, { schema: CDK_SCHEMA }) as CFNTemplate;

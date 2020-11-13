@@ -37,9 +37,9 @@ class CdkMigrator extends Command {
     const config = args.parse(this.parse(CdkMigrator));
     args.validate(config);
 
-    this.log(`Converting template found at ${config.cfn_path}`);
+    this.log(`Converting template found at ${config.cfnPath}`);
     this.log(
-      `New stack ${config.stack_name} will be written to ${config.output_path}`
+      `New stack ${config.stackName} will be written to ${config.outputPath}`
     );
 
     const { imports, template } = parse(config);
