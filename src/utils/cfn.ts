@@ -61,7 +61,7 @@ class CfnParser {
     }
   };
 
-  parseParameters = (cfn: CFNTemplate) => {
+  parseParameters = (cfn: CFNTemplate): void => {
     Object.keys(cfn.Parameters).forEach((key) => {
       const param = cfn.Parameters[key];
 

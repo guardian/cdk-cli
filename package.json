@@ -48,6 +48,7 @@
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "echo NO TESTS",
+    "lint": "eslint src/** --ext .ts",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"
