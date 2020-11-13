@@ -79,7 +79,7 @@ class CfnParser {
       }
 
       if (param.Type === 'String') {
-        this.imports.addImport('../components/core', {
+        this.imports.addImport('../constructs/core', {
           type: 'component',
           components: ['GuStringParameter'],
         });
@@ -88,7 +88,7 @@ class CfnParser {
           parameterType: 'GuStringParameter',
         };
       } else {
-        this.imports.addImport('../components/core', {
+        this.imports.addImport('../constructs/core', {
           type: 'component',
           components: ['GuParameter'],
         });
