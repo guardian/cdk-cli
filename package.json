@@ -1,5 +1,5 @@
 {
-  "name": "cdk-migrator",
+  "name": "@guardian/cdk-migrator",
   "description": "A CLI tool to migrate from cloudformation to Guardian flavoured CDK",
   "version": "0.0.0",
   "author": "The Guardian",
