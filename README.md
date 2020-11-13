@@ -1,5 +1,7 @@
 # cdk-migrator
 
+**This tool is a work in progress. It relies on the as-yet-unpublished Guardian CDK library.**
+
 A CLI tool to migrate from cloudformation to Guardian flavoured CDK
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
