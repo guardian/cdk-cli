@@ -41,7 +41,11 @@
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "oclif": {
-    "bin": "cdk-migrator"
+    "commands": "./lib/commands",
+    "bin": "cdk-migrator",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
   },
   "repository": "guardian/cdk-migrator",
   "scripts": {
