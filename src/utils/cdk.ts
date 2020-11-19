@@ -1,6 +1,6 @@
 import { CfnParameterProps } from '@aws-cdk/core';
 import { Config } from './args';
-import { Imports } from './imports';
+import { Imports, importType } from './imports';
 import { CodeMaker, toCamelCase } from 'codemaker';
 import * as path from 'path';
 
@@ -15,18 +15,12 @@ export interface CDKTemplate {
   };
 }
 
-class CdkBuilder {
+export class CdkBuilder {
   config: Config;
   imports: Imports;
   template: CDKTemplate;
 
   code: CodeMaker;
-
-  paramFormatters: { [key: string]: (val: any) => any } = {
-    default: (val: string) => `"${val}"`,
-    noEcho: (val) => val,
-    allowedValues: (val) => `[${val.map((v: string) => `"${v}"`)}]`,
-  };
 
   constructor(config: Config, imports: Imports, template: CDKTemplate) {
     this.config = config;
@@ -66,19 +60,20 @@ class CdkBuilder {
     await this.code.save(this.config.outputDir);
   }
 
+  // TODO: Update this for our preferred style of imports
   addImports(): void {
     this.code.line();
     this.code.line(`import cdk = require("@aws-cdk/core")`);
     Object.keys(this.imports.imports).forEach((lib) => {
       const libProps = this.imports.imports[lib];
       switch (libProps.type) {
-        case 'all':
+        case importType.ALL:
           this.code.line(`import * as ${libProps.name} from "${lib}"`);
           break;
-        case 'require':
+        case importType.REQUIRE:
           this.code.line(`import ${libProps.name} = require("${lib}")`);
           break;
-        case 'component':
+        case importType.COMPONENT:
           this.code.line(
             `import {${libProps.components?.join(', ')}} from "${lib}"`
           );
@@ -96,37 +91,55 @@ class CdkBuilder {
       '// TODO: Consider if any of the helper classes in components/core/parameters.ts file could be used here'
     );
     this.code.openBlock(`const parameters =`);
+
     Object.keys(this.template.Parameters).forEach((paramName) => {
-      const param = this.template.Parameters[paramName];
-      if (param.comment) {
-        this.code.line(`// ${param.comment}`);
+      this.addParam(paramName, this.template.Parameters[paramName])
+    });
+
+    this.code.closeBlock();
+  }
+
+  addParam(name: string, props: CdkParameterProps): void {
+      if (props.comment) {
+        this.code.line(`// ${props.comment}`);
       }
+
       this.code.indent(
-        `${paramName}: new ${param.parameterType}(this, "${paramName}", {`
+        `${name}: new ${props.parameterType}(this, "${name}", {`
       );
-      Object.entries(param).forEach((val) => {
+
+      Object.entries(props).forEach((val) => {
         const pKey = toCamelCase(val[0]);
 
-        let skip = false;
-
-        if (
-          pKey === 'parameterType' ||
-          pKey === 'comment' ||
-          (pKey === 'type' && val[1] === 'String')
-        ) {
-          skip = true;
-        }
-
-        if (!skip) {
-          const pValue = this.paramFormatters[pKey]
-            ? this.paramFormatters[pKey](val[1])
-            : this.paramFormatters.default(val[1]);
-          this.code.line(`${pKey}: ${pValue},`);
+        if (!this.shouldSkipParamProp(pKey, val[1])) {
+          this.code.line(`${pKey}: ${this.formatParam(pKey, val[1])},`);
         }
       });
+
       this.code.unindent(`}),`);
-    });
-    this.code.closeBlock();
+  }
+
+  formatParam(name: string, value: any): any {
+    switch (name) {
+      case "noEcho":
+        return value
+      case "allowValues":
+          return `[${value.map((v: string) => `"${v}"`)}]`
+      default:
+        return `"${value}"`
+    }
+  }
+
+  shouldSkipParamProp(key: string, val: any): boolean {
+    const keysToSkip = ["parameterType", "comment"]
+
+    if (keysToSkip.includes(key)) return true
+
+    // Special cases
+
+    if (key === 'type' && val === 'String') return true
+
+    return false
   }
 }
 
