@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import { Config } from './args';
-import {toCamelCase} from 'codemaker'
-import { Imports, importType } from './imports';
+import { toCamelCase } from 'codemaker';
+import { Imports } from './imports';
 import { CDKTemplate } from './cdk';
 import { camelCaseObjectKeys } from './utils';
 
@@ -66,27 +66,25 @@ export class CfnParser {
 
   parseParameters = (cfn: CFNTemplate): void => {
     Object.keys(cfn.Parameters).forEach((key) => {
-      const parameters = camelCaseObjectKeys(cfn.Parameters[key])
+      const parameters = camelCaseObjectKeys(cfn.Parameters[key]);
 
-      const similarConstuct = this.getSimilarConstructs(key)
+      const similarConstuct = this.getSimilarConstructs(key);
       if (similarConstuct) {
-        parameters.comment = similarConstuct
+        parameters.comment = similarConstuct;
       }
 
       if (parameters.type === 'String') {
-        this.imports.addImport('@guardian/cdk/lib/constructs/core', {
-          type: importType.COMPONENT,
-          components: ['GuStringParameter'],
-        });
+        this.imports.addImport('@guardian/cdk/lib/constructs/core', [
+          'GuStringParameter',
+        ]);
         this.template.Parameters[key] = {
           ...parameters,
           parameterType: 'GuStringParameter',
         };
       } else {
-        this.imports.addImport('@guardian/cdk/lib/constructs/core', {
-          type: importType.COMPONENT,
-          components: ['GuParameter'],
-        });
+        this.imports.addImport('@guardian/cdk/lib/constructs/core', [
+          'GuParameter',
+        ]);
         this.template.Parameters[key] = {
           ...parameters,
           parameterType: 'GuParameter',

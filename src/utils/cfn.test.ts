@@ -3,7 +3,7 @@ import { CfnParser } from './cfn';
 import { mocked } from 'ts-jest/utils';
 import fs from 'fs';
 import yaml from 'js-yaml';
-import { Imports, importType } from './imports';
+import { Imports } from './imports';
 
 jest.mock('fs');
 const mockedFs = mocked(fs, true);
@@ -77,10 +77,7 @@ describe('The CfnParser class', () => {
       });
 
       expect(parser.imports.imports).toMatchObject({
-        '@guardian/cdk/lib/constructs/core': {
-          type: importType.COMPONENT,
-          components: ['GuStringParameter'],
-        },
+        '@guardian/cdk/lib/constructs/core': ['GuStringParameter'],
       });
     });
 
@@ -104,10 +101,7 @@ describe('The CfnParser class', () => {
       });
 
       expect(parser.imports.imports).toMatchObject({
-        '@guardian/cdk/lib/constructs/core': {
-          type: importType.COMPONENT,
-          components: ['GuParameter'],
-        },
+        '@guardian/cdk/lib/constructs/core': ['GuParameter'],
       });
     });
 
