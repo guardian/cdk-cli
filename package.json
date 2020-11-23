@@ -53,6 +53,7 @@
   "repository": "guardian/cdk-migrator",
   "scripts": {
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+    "build": "yarn prepack",
     "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint src/** --ext .ts",
     "version": "oclif-dev readme && git add README.md"
