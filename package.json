@@ -1,12 +1,12 @@
 {
-  "name": "@guardian/cdk-migrator",
+  "name": "@guardian/cdk-cli",
   "description": "A CLI tool to migrate from cloudformation to Guardian flavoured CDK",
   "version": "0.0.0",
   "author": "The Guardian",
   "bin": {
-    "cdk-migrator": "./bin/run"
+    "cdk-cli": "./bin/run"
   },
-  "bugs": "https://github.com/guardian/cdk-migrator/issues",
+  "bugs": "https://github.com/guardian/cdk-cli/issues",
   "dependencies": {
     "@aws-cdk/core": "^1.73.0",
     "@oclif/command": "^1",
@@ -42,7 +42,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/guardian/cdk-migrator",
+  "homepage": "https://github.com/guardian/cdk-cli",
   "keywords": [
     "oclif"
   ],
@@ -50,12 +50,12 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "cdk-migrator",
+    "bin": "cdk-cli",
     "plugins": [
       "@oclif/plugin-help"
     ]
   },
-  "repository": "guardian/cdk-migrator",
+  "repository": "guardian/cdk-cli",
   "scripts": {
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "build": "yarn prepack",
