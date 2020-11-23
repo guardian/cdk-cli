@@ -77,7 +77,7 @@ describe('The CfnParser class', () => {
       });
 
       expect(parser.imports.imports).toMatchObject({
-        '../constructs/core': {
+        '@guardian/cdk/lib/constructs/core': {
           type: importType.COMPONENT,
           components: ['GuStringParameter'],
         },
@@ -104,7 +104,7 @@ describe('The CfnParser class', () => {
       });
 
       expect(parser.imports.imports).toMatchObject({
-        '../constructs/core': {
+        '@guardian/cdk/lib/constructs/core': {
           type: importType.COMPONENT,
           components: ['GuParameter'],
         },
