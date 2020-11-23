@@ -74,7 +74,7 @@ export class CfnParser {
       }
 
       if (parameters.type === 'String') {
-        this.imports.addImport('../constructs/core', {
+        this.imports.addImport('@guardian/cdk/lib/constructs/core', {
           type: importType.COMPONENT,
           components: ['GuStringParameter'],
         });
@@ -83,7 +83,7 @@ export class CfnParser {
           parameterType: 'GuStringParameter',
         };
       } else {
-        this.imports.addImport('../constructs/core', {
+        this.imports.addImport('@guardian/cdk/lib/constructs/core', {
           type: importType.COMPONENT,
           components: ['GuParameter'],
         });
