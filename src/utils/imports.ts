@@ -1,13 +1,27 @@
-export interface ImportProps {
-  type: 'require' | 'all' | 'component';
-  components?: string[];
-  name?: string;
+export enum importType {
+  REQUIRE="require",
+  ALL="all",
+  COMPONENT="component"
+}
+
+interface BaseImportProps {
+  type: importType;
+}
+
+interface ComponentImportProps extends BaseImportProps {
+  type: importType.COMPONENT;
+  components: string[];
+}
+
+interface OtherImportProps extends BaseImportProps {
+  type: importType.ALL | importType.REQUIRE;
+  name: string;
 }
 
 export class Imports {
-  imports: { [lib: string]: ImportProps } = {};
+  imports: { [lib: string]: ComponentImportProps | OtherImportProps } = {};
 
-  addImport(lib: string, props: ImportProps): void {
+  addImport(lib: string, props: ComponentImportProps | OtherImportProps): void {
     if (!this.imports[lib]) {
       this.imports[lib] = props;
       return;
@@ -19,10 +33,13 @@ export class Imports {
       );
     }
 
-    if (props.type === 'component') {
-      this.imports[lib].components = [
+    if (props.type === importType.COMPONENT) {
+      const foo = props as ComponentImportProps
+      const bar = this.imports[lib] as ComponentImportProps
+
+      bar.components = [
         ...new Set(
-          (this.imports[lib].components || []).concat(props.components || [])
+          (bar.components || []).concat(foo.components || [])
         ),
       ];
     }

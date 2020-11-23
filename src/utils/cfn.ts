@@ -1,9 +1,10 @@
 import * as fs from 'fs';
 import * as yaml from 'js-yaml';
-import { toCamelCase } from 'codemaker';
 import { Config } from './args';
-import { Imports } from './imports';
+import {toCamelCase} from 'codemaker'
+import { Imports, importType } from './imports';
 import { CDKTemplate } from './cdk';
+import { camelCaseObjectKeys } from './utils';
 
 export interface CFNTemplate {
   Parameters: {
@@ -27,9 +28,11 @@ const CDK_SCHEMA = yaml.Schema.create([
   }),
 ]);
 
-class CfnParser {
+export class CfnParser {
   config: Config;
 
+  // TODO: Make this its own class so that we can do addParameter?
+  //       Then the builder would be part of that?
   template: CDKTemplate = {
     Parameters: {},
   };
@@ -63,24 +66,16 @@ class CfnParser {
 
   parseParameters = (cfn: CFNTemplate): void => {
     Object.keys(cfn.Parameters).forEach((key) => {
-      const param = cfn.Parameters[key];
+      const parameters = camelCaseObjectKeys(cfn.Parameters[key])
 
-      // TODO: Do this a better way
-      const parameters: { [key: string]: any } = {};
-      Object.keys(param).reduce(
-        (c, k) => ((parameters[toCamelCase(k)] = param[k]), c),
-        {}
-      );
-
-      for (const p of this.paramComponents) {
-        if (p.names.includes(key.toLowerCase())) {
-          parameters.comment = `Your parameter looks similar to ${p.type}. Consider using that instead.`;
-        }
+      const similarConstuct = this.getSimilarConstructs(key)
+      if (similarConstuct) {
+        parameters.comment = similarConstuct
       }
 
-      if (param.Type === 'String') {
+      if (parameters.type === 'String') {
         this.imports.addImport('../constructs/core', {
-          type: 'component',
+          type: importType.COMPONENT,
           components: ['GuStringParameter'],
         });
         this.template.Parameters[key] = {
@@ -89,7 +84,7 @@ class CfnParser {
         };
       } else {
         this.imports.addImport('../constructs/core', {
-          type: 'component',
+          type: importType.COMPONENT,
           components: ['GuParameter'],
         });
         this.template.Parameters[key] = {
@@ -99,6 +94,14 @@ class CfnParser {
       }
     });
   };
+
+  getSimilarConstructs(name: string): string | void {
+    for (const p of this.paramComponents) {
+      if (p.names.includes(toCamelCase(name).toLowerCase())) {
+        return `Your parameter looks similar to ${p.type}. Consider using that instead.`;
+      }
+    }
+  }
 }
 
 export const parse = (
