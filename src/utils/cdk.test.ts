@@ -218,8 +218,8 @@ describe('The CdkBuilder class', () => {
       expect(builder.formatParam('noEcho', true)).toBe(true);
     });
 
-    test('formats allowValues values correctly', () => {
-      expect(builder.formatParam('allowValues', ['one', 'two'])).toBe(
+    test('formats allowedValues values correctly', () => {
+      expect(builder.formatParam('allowedValues', ['one', 'two'])).toBe(
         `["one","two"]`
       );
     });

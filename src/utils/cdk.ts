@@ -93,53 +93,51 @@ export class CdkBuilder {
     this.code.openBlock(`const parameters =`);
 
     Object.keys(this.template.Parameters).forEach((paramName) => {
-      this.addParam(paramName, this.template.Parameters[paramName])
+      this.addParam(paramName, this.template.Parameters[paramName]);
     });
 
     this.code.closeBlock();
   }
 
   addParam(name: string, props: CdkParameterProps): void {
-      if (props.comment) {
-        this.code.line(`// ${props.comment}`);
+    if (props.comment) {
+      this.code.line(`// ${props.comment}`);
+    }
+
+    this.code.indent(`${name}: new ${props.parameterType}(this, "${name}", {`);
+
+    Object.entries(props).forEach((val) => {
+      const pKey = toCamelCase(val[0]);
+
+      if (!this.shouldSkipParamProp(pKey, val[1])) {
+        this.code.line(`${pKey}: ${this.formatParam(pKey, val[1])},`);
       }
+    });
 
-      this.code.indent(
-        `${name}: new ${props.parameterType}(this, "${name}", {`
-      );
-
-      Object.entries(props).forEach((val) => {
-        const pKey = toCamelCase(val[0]);
-
-        if (!this.shouldSkipParamProp(pKey, val[1])) {
-          this.code.line(`${pKey}: ${this.formatParam(pKey, val[1])},`);
-        }
-      });
-
-      this.code.unindent(`}),`);
+    this.code.unindent(`}),`);
   }
 
   formatParam(name: string, value: any): any {
     switch (name) {
-      case "noEcho":
-        return value
-      case "allowValues":
-          return `[${value.map((v: string) => `"${v}"`)}]`
+      case 'noEcho':
+        return value;
+      case 'allowedValues':
+        return `[${value.map((v: string) => `"${v}"`)}]`;
       default:
-        return `"${value}"`
+        return `"${value}"`;
     }
   }
 
   shouldSkipParamProp(key: string, val: any): boolean {
-    const keysToSkip = ["parameterType", "comment"]
+    const keysToSkip = ['parameterType', 'comment'];
 
-    if (keysToSkip.includes(key)) return true
+    if (keysToSkip.includes(key)) return true;
 
     // Special cases
 
-    if (key === 'type' && val === 'String') return true
+    if (key === 'type' && val === 'String') return true;
 
-    return false
+    return false;
   }
 }
 
