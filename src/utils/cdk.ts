@@ -27,7 +27,8 @@ export class CdkBuilder {
     this.imports = imports;
     this.template = template;
 
-    this.code = new CodeMaker();
+    this.code = new CodeMaker({ indentationLevel: 2 });
+    this.code.closeBlockFormatter = (s?: string): string => s ?? '}';
   }
 
   async constructCdkFile(): Promise<void> {
@@ -49,7 +50,7 @@ export class CdkBuilder {
     this.code.openBlock(
       `constructor(scope: Construct, id: string, props?: StackProps)`
     );
-    this.code.line('super(scope, id, props)');
+    this.code.line('super(scope, id, props);');
 
     this.addParams();
 
@@ -66,7 +67,7 @@ export class CdkBuilder {
     Object.keys(this.imports.imports).forEach((lib) => {
       const components = this.imports.imports[lib];
 
-      this.code.line(`import { ${components?.join(', ')} } from "${lib}"`);
+      this.code.line(`import { ${components?.join(', ')} } from "${lib}";`);
     });
     this.code.line();
   }
@@ -84,7 +85,7 @@ export class CdkBuilder {
       this.addParam(paramName, this.template.Parameters[paramName]);
     });
 
-    this.code.closeBlock();
+    this.code.closeBlock('};');
   }
 
   addParam(name: string, props: CdkParameterProps): void {
