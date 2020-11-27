@@ -1,6 +1,6 @@
 import { CfnParameterProps } from '@aws-cdk/core';
 import { Config } from './args';
-import { Imports, importType } from './imports';
+import { Imports } from './imports';
 import { CodeMaker, toCamelCase } from 'codemaker';
 import * as path from 'path';
 
@@ -63,22 +63,14 @@ export class CdkBuilder {
   // TODO: Update this for our preferred style of imports
   addImports(): void {
     this.code.line();
-    this.code.line(`import cdk = require("@aws-cdk/core")`);
+    this.code.line(
+      `import type { Construct, StackProps } from "@aws-cdk/core"`
+    );
+    this.code.line(`import { Stack } from "@aws-cdk/core"`);
     Object.keys(this.imports.imports).forEach((lib) => {
-      const libProps = this.imports.imports[lib];
-      switch (libProps.type) {
-        case importType.ALL:
-          this.code.line(`import * as ${libProps.name} from "${lib}"`);
-          break;
-        case importType.REQUIRE:
-          this.code.line(`import ${libProps.name} = require("${lib}")`);
-          break;
-        case importType.COMPONENT:
-          this.code.line(
-            `import {${libProps.components?.join(', ')}} from "${lib}"`
-          );
-          break;
-      }
+      const components = this.imports.imports[lib];
+
+      this.code.line(`import { ${components?.join(', ')} } from "${lib}"`);
     });
     this.code.line();
   }

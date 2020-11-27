@@ -1,7 +1,7 @@
 import { CodeMaker } from 'codemaker';
 import { Config } from './args';
 import { CdkBuilder, CDKTemplate } from './cdk';
-import { Imports, importType } from './imports';
+import { Imports } from './imports';
 
 const mockedCodeMaker: { [key: string]: jest.Mock } = {
   line: jest.fn(),
@@ -43,58 +43,24 @@ describe('The CdkBuilder class', () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import cdk = require("@aws-cdk/core")`
+        `import type { Construct, StackProps } from "@aws-cdk/core"`
+      );
+      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+        3,
+        `import { Stack } from "@aws-cdk/core"`
       );
     });
-
-    test('adds ALL style imports correctly', () => {
+    test('adds imports correctly', () => {
       const imports = new Imports();
       imports.imports = {
-        test: {
-          type: importType.ALL,
-          name: 'test',
-        },
+        test: ['Test'],
       };
       builder.imports = imports;
 
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        3,
-        `import * as test from "test"`
-      );
-    });
-
-    test('adds REQUIRE style imports correctly', () => {
-      const imports = new Imports();
-      imports.imports = {
-        test: {
-          type: importType.REQUIRE,
-          name: 'test',
-        },
-      };
-      builder.imports = imports;
-
-      builder.addImports();
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        3,
-        `import test = require("test")`
-      );
-    });
-
-    test('adds COMPONENT style imports correctly', () => {
-      const imports = new Imports();
-      imports.imports = {
-        test: {
-          type: importType.COMPONENT,
-          components: ['Test'],
-        },
-      };
-      builder.imports = imports;
-
-      builder.addImports();
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        3,
-        `import {Test} from "test"`
+        4,
+        `import { Test } from "test"`
       );
     });
   });
