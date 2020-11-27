@@ -64,11 +64,15 @@ export class CdkBuilder {
   // TODO: Update this for our preferred style of imports
   addImports(): void {
     this.code.line();
-    Object.keys(this.imports.imports).forEach((lib) => {
-      const components = this.imports.imports[lib];
+    Object.keys(this.imports.imports)
+      .sort()
+      .forEach((lib) => {
+        const components = this.imports.imports[lib];
 
-      this.code.line(`import { ${components?.join(', ')} } from "${lib}";`);
-    });
+        this.code.line(
+          `import { ${components?.sort().join(', ')} } from "${lib}";`
+        );
+      });
     this.code.line();
   }
 
