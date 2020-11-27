@@ -186,7 +186,7 @@ describe('The CdkBuilder class', () => {
 
     test('formats allowedValues values correctly', () => {
       expect(builder.formatParam('allowedValues', ['one', 'two'])).toBe(
-        `["one","two"]`
+        `["one", "two"]`
       );
     });
 

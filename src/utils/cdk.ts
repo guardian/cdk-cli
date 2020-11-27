@@ -115,7 +115,7 @@ export class CdkBuilder {
       case 'noEcho':
         return value;
       case 'allowedValues':
-        return `[${value.map((v: string) => `"${v}"`)}]`;
+        return `[${value.map((v: string) => `"${v}"`).join(', ')}]`;
       default:
         return `"${value}"`;
     }
