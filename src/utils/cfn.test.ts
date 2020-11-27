@@ -56,6 +56,7 @@ describe('The CfnParser class', () => {
       };
 
       parser.imports = new Imports();
+      parser.imports.imports = {};
     });
 
     test('adds a GuStringParameter and imports for string parameters', () => {
