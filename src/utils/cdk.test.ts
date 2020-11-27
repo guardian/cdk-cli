@@ -43,11 +43,11 @@ describe('The CdkBuilder class', () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import type { Construct, StackProps } from "@aws-cdk/core"`
+        `import { Construct, StackProps } from "@aws-cdk/core"`
       );
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         3,
-        `import { Stack } from "@aws-cdk/core"`
+        `import { GuStack } from "@guardian/cdk/lib/constructs/core"`
       );
     });
     test('adds imports correctly', () => {
@@ -59,7 +59,7 @@ describe('The CdkBuilder class', () => {
 
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        4,
+        2,
         `import { Test } from "test"`
       );
     });

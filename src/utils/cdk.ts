@@ -44,10 +44,10 @@ export class CdkBuilder {
     this.addImports();
 
     this.code.openBlock(
-      `export class ${this.config.stackName} extends cdk.Stack`
+      `export class ${this.config.stackName} extends GuStack`
     );
     this.code.openBlock(
-      `constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps)`
+      `constructor(scope: Construct, id: string, props?: StackProps)`
     );
     this.code.line('super(scope, id, props)');
 
@@ -63,10 +63,6 @@ export class CdkBuilder {
   // TODO: Update this for our preferred style of imports
   addImports(): void {
     this.code.line();
-    this.code.line(
-      `import type { Construct, StackProps } from "@aws-cdk/core"`
-    );
-    this.code.line(`import { Stack } from "@aws-cdk/core"`);
     Object.keys(this.imports.imports).forEach((lib) => {
       const components = this.imports.imports[lib];
 
