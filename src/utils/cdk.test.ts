@@ -43,11 +43,11 @@ describe('The CdkBuilder class', () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import { Construct, StackProps } from "@aws-cdk/core"`
+        `import { Construct, StackProps } from "@aws-cdk/core";`
       );
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         3,
-        `import { GuStack } from "@guardian/cdk/lib/constructs/core"`
+        `import { GuStack } from "@guardian/cdk/lib/constructs/core";`
       );
     });
     test('adds imports correctly', () => {
@@ -60,7 +60,7 @@ describe('The CdkBuilder class', () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import { Test } from "test"`
+        `import { Test } from "test";`
       );
     });
   });
@@ -111,7 +111,7 @@ describe('The CdkBuilder class', () => {
         1,
         'const parameters ='
       );
-      expect(mockedCodeMaker.closeBlock).toHaveBeenNthCalledWith(1);
+      expect(mockedCodeMaker.closeBlock).toHaveBeenNthCalledWith(1, '};');
     });
 
     test('adds parameters as required parameters object', () => {
@@ -186,7 +186,7 @@ describe('The CdkBuilder class', () => {
 
     test('formats allowedValues values correctly', () => {
       expect(builder.formatParam('allowedValues', ['one', 'two'])).toBe(
-        `["one","two"]`
+        `["one", "two"]`
       );
     });
 
