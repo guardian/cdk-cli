@@ -1,9 +1,24 @@
+import { basename, dirname } from "path";
 import { Command, flags } from "@oclif/command";
-import { parse as argparse, validate } from "../utils/args";
+import { checkPathExists, getStackNameFromFileName } from "../utils/args";
 import { construct } from "../utils/cdk";
 import { parse } from "../utils/cfn";
 
-export class CdkMigrator extends Command {
+interface MigrateCommandConfig {
+  cfnPath: string;
+  outputPath: string;
+  outputDir: string;
+  outputFile: string;
+  stackName: string;
+}
+
+interface MigrateCommandArgs {
+  template: string;
+  output: string;
+  stack?: string;
+}
+
+export class MigrateCommand extends Command {
   static description =
     "Migrates from a cloudformation template to Guardian flavoured CDK";
 
@@ -30,11 +45,30 @@ export class CdkMigrator extends Command {
     },
   ];
 
+  static getConfig = ({
+    args,
+  }: {
+    args: MigrateCommandArgs;
+  }): MigrateCommandConfig => {
+    const outputFile = basename(args.output);
+
+    const config = {
+      cfnPath: args.template,
+      outputPath: args.output,
+      outputDir: dirname(args.output),
+      outputFile: outputFile,
+      stackName: args.stack ?? getStackNameFromFileName(outputFile),
+    };
+
+    checkPathExists(config.cfnPath);
+
+    return config;
+  };
+
   async run(): Promise<void> {
     this.log("Starting CDK generator");
 
-    const config = argparse(this.parse(CdkMigrator));
-    validate(config);
+    const config = MigrateCommand.getConfig(this.parse(MigrateCommand));
 
     this.log(`Converting template found at ${config.cfnPath}`);
     this.log(
