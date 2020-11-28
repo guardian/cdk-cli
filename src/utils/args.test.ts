@@ -1,5 +1,47 @@
-import { parse, validate, Config } from './args';
+import { parse, validate, Config, getStackNameFromFileName } from './args';
 import fs from 'fs';
+
+describe('The getStackNameFromFileName function', () => {
+  test('strips file extension', () => {
+    expect(getStackNameFromFileName('test.ts')).toBe('Test');
+  });
+
+  test('strips multiple extensions', () => {
+    expect(getStackNameFromFileName('test.spec.ts')).toBe('Test');
+  });
+
+  test('converts snake case to pascal case', () => {
+    expect(getStackNameFromFileName('test_name')).toBe('TestName');
+  });
+
+  test('converts kebab case to pascal case', () => {
+    expect(getStackNameFromFileName('test-name')).toBe('TestName');
+  });
+
+  test('converts camel case to pascal case', () => {
+    expect(getStackNameFromFileName('testName')).toBe('TestName');
+  });
+
+  test('converts mixed case to pascal case', () => {
+    expect(getStackNameFromFileName('this-is_aTestName')).toBe(
+      'ThisIsATestName'
+    );
+  });
+
+  test('removes any other special characters', () => {
+    expect(
+      getStackNameFromFileName('t!e@s£t$-%n^a&m*e()_-+=[]{}|\\"\';:/?><,~`')
+    ).toBe('TestName');
+  });
+
+  test('removes any spaces', () => {
+    expect(getStackNameFromFileName('test name')).toBe('TestName');
+  });
+
+  test('allows numbers', () => {
+    expect(getStackNameFromFileName('test name 1')).toBe('TestName1');
+  });
+});
 
 describe('The parse function', () => {
   const args = {
@@ -27,6 +69,19 @@ describe('The parse function', () => {
   test('pulls outs output file correctly', () => {
     expect(parse(args)).toMatchObject({
       outputFile: 'output.ts',
+    });
+  });
+
+  test('gets stack name from file if not provided', () => {
+    const args = {
+      args: {
+        template: 'template',
+        output: '/path/to/stack-name.ts',
+      },
+    };
+
+    expect(parse({ ...args })).toMatchObject({
+      stackName: 'StackName',
     });
   });
 });
