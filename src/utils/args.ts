@@ -1,13 +1,6 @@
 import { existsSync } from "fs";
 import { toPascalCase } from "codemaker";
 
-export interface Config {
-  outputFile: string;
-  cfnPath: string;
-  stackName: string;
-  outputDir: string;
-}
-
 export const getStackNameFromFileName = (filename: string): string => {
   // Split on . and get first element to remove any extensions
   // Replace anything which is a space, word char, underscore or hyphen
