@@ -43,7 +43,7 @@ describe('The CdkBuilder class', () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import { Construct, StackProps } from "@aws-cdk/core";`
+        `import { App, StackProps } from "@aws-cdk/core";`
       );
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         3,

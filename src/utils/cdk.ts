@@ -48,7 +48,7 @@ export class CdkBuilder {
       `export class ${this.config.stackName} extends GuStack`
     );
     this.code.openBlock(
-      `constructor(scope: Construct, id: string, props?: StackProps)`
+      `constructor(scope: App, id: string, props?: StackProps)`
     );
     this.code.line('super(scope, id, props);');
 

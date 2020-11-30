@@ -1,7 +1,7 @@
 export class Imports {
   imports: { [lib: string]: string[] } = {
-    "@aws-cdk/core": ["Construct", "StackProps"],
-    "@guardian/cdk/lib/constructs/core": ["GuStack"]
+    '@aws-cdk/core': ['App', 'StackProps'],
+    '@guardian/cdk/lib/constructs/core': ['GuStack'],
   };
 
   addImport(lib: string, components: string[]): void {
