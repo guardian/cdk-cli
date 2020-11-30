@@ -24,10 +24,9 @@ export default class CdkMigrator extends Command {
       description: 'The file to output CDK to',
     },
     {
-      // TODO: Use the output filename if this isn't provided
       name: 'stack',
-      required: true,
-      description: 'The name to give the stack',
+      required: false,
+      description: 'A name to give the stack. Defaults to match the filename.',
     },
   ];
 
