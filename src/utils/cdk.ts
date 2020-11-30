@@ -77,6 +77,8 @@ export class CdkBuilder {
   }
 
   addParams(): void {
+    if (!Object.keys(this.template.Parameters).length) return;
+
     this.code.line();
     this.code.line('/* Parameters */');
 
