@@ -1,17 +1,15 @@
 export class Imports {
-  imports: { [lib: string]: string[] } = {
-    '@aws-cdk/core': ['App', 'StackProps'],
-    '@guardian/cdk/lib/constructs/core': ['GuStack'],
+  imports: Record<string, string[]> = {
+    "@aws-cdk/core": ["App", "StackProps"],
+    "@guardian/cdk/lib/constructs/core": ["GuStack"],
   };
 
   addImport(lib: string, components: string[]): void {
-    if (!this.imports[lib]) {
+    if (!Object.keys(this.imports).includes(lib)) {
       this.imports[lib] = components;
       return;
     }
 
-    this.imports[lib] = [
-      ...new Set((this.imports[lib] || []).concat(components || [])),
-    ];
+    this.imports[lib] = [...new Set(this.imports[lib].concat(components))];
   }
 }
