@@ -3,11 +3,21 @@
     "declaration": true,
     "importHelpers": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "target": "es2017",
-    "esModuleInterop": true
+    "target": "ES2020",
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "typeRoots": ["./node_modules/@types"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/**/*.test.ts"]
 }
