@@ -86,8 +86,18 @@ describe('The CdkBuilder class', () => {
     builder.code = (mockedCodeMaker as unknown) as CodeMaker;
 
     beforeEach(() => {
+      builder.template = template;
       clearMockedCodeMaker();
       mockAddParam.mockClear();
+    });
+
+    test('does not render anything if parameters are empty', () => {
+      builder.template = {
+        Parameters: {},
+      };
+      builder.addParams();
+
+      expect(mockedCodeMaker.line).toHaveBeenCalledTimes(0);
     });
 
     test('adds parameters comments', () => {
