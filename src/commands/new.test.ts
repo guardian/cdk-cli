@@ -1,42 +1,42 @@
-import NewCommand from './new';
+import { NewCommand } from "./new";
 
-describe('The NewCommand class', () => {
-  describe('getConfig function', () => {
+describe("The NewCommand class", () => {
+  describe("getConfig function", () => {
     const args = {
       args: {
-        output: '/path/to/output.ts',
-        stack: 'stack',
+        output: "/path/to/output.ts",
+        stack: "stack",
       },
     };
 
-    test('pulls out output and stack args', () => {
+    test("pulls out output and stack args", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
-        outputPath: '/path/to/output.ts',
-        stackName: 'stack',
+        outputPath: "/path/to/output.ts",
+        stackName: "stack",
       });
     });
 
-    test('pulls outs output dir correctly', () => {
+    test("pulls outs output dir correctly", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
-        outputDir: '/path/to',
+        outputDir: "/path/to",
       });
     });
 
-    test('pulls outs output file correctly', () => {
+    test("pulls outs output file correctly", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
-        outputFile: 'output.ts',
+        outputFile: "output.ts",
       });
     });
 
-    test('gets stack name from file if not provided', () => {
+    test("gets stack name from file if not provided", () => {
       const args = {
         args: {
-          output: '/path/to/stack-name.ts',
+          output: "/path/to/stack-name.ts",
         },
       };
 
       expect(NewCommand.getConfig({ ...args })).toMatchObject({
-        stackName: 'StackName',
+        stackName: "StackName",
       });
     });
   });
