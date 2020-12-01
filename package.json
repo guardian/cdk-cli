@@ -61,6 +61,7 @@
     "build": "yarn prepack",
     "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint src/** --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
   "types": "lib/index.d.ts"
