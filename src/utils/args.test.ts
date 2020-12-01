@@ -1,98 +1,99 @@
-import { parse, validate, Config, getStackNameFromFileName } from './args';
-import fs from 'fs';
+import fs from "fs";
+import type { Config } from "./args";
+import { getStackNameFromFileName, parse, validate } from "./args";
 
-describe('The getStackNameFromFileName function', () => {
-  test('strips file extension', () => {
-    expect(getStackNameFromFileName('test.ts')).toBe('Test');
+describe("The getStackNameFromFileName function", () => {
+  test("strips file extension", () => {
+    expect(getStackNameFromFileName("test.ts")).toBe("Test");
   });
 
-  test('strips multiple extensions', () => {
-    expect(getStackNameFromFileName('test.spec.ts')).toBe('Test');
+  test("strips multiple extensions", () => {
+    expect(getStackNameFromFileName("test.spec.ts")).toBe("Test");
   });
 
-  test('converts snake case to pascal case', () => {
-    expect(getStackNameFromFileName('test_name')).toBe('TestName');
+  test("converts snake case to pascal case", () => {
+    expect(getStackNameFromFileName("test_name")).toBe("TestName");
   });
 
-  test('converts kebab case to pascal case', () => {
-    expect(getStackNameFromFileName('test-name')).toBe('TestName');
+  test("converts kebab case to pascal case", () => {
+    expect(getStackNameFromFileName("test-name")).toBe("TestName");
   });
 
-  test('converts camel case to pascal case', () => {
-    expect(getStackNameFromFileName('testName')).toBe('TestName');
+  test("converts camel case to pascal case", () => {
+    expect(getStackNameFromFileName("testName")).toBe("TestName");
   });
 
-  test('converts mixed case to pascal case', () => {
-    expect(getStackNameFromFileName('this-is_aTestName')).toBe(
-      'ThisIsATestName'
+  test("converts mixed case to pascal case", () => {
+    expect(getStackNameFromFileName("this-is_aTestName")).toBe(
+      "ThisIsATestName"
     );
   });
 
-  test('removes any other special characters', () => {
+  test("removes any other special characters", () => {
     expect(
-      getStackNameFromFileName('t!e@s£t$-%n^a&m*e()_-+=[]{}|\\"\';:/?><,~`')
-    ).toBe('TestName');
+      getStackNameFromFileName("t!e@s£t$-%n^a&m*e()_-+=[]{}|\\\"';:/?><,~`")
+    ).toBe("TestName");
   });
 
-  test('removes any spaces', () => {
-    expect(getStackNameFromFileName('test name')).toBe('TestName');
+  test("removes any spaces", () => {
+    expect(getStackNameFromFileName("test name")).toBe("TestName");
   });
 
-  test('allows numbers', () => {
-    expect(getStackNameFromFileName('test name 1')).toBe('TestName1');
+  test("allows numbers", () => {
+    expect(getStackNameFromFileName("test name 1")).toBe("TestName1");
   });
 });
 
-describe('The parse function', () => {
+describe("The parse function", () => {
   const args = {
     args: {
-      template: 'template',
-      output: '/path/to/output.ts',
-      stack: 'stack',
+      template: "template",
+      output: "/path/to/output.ts",
+      stack: "stack",
     },
   };
 
-  test('pulls outs template, output and stack args', () => {
+  test("pulls outs template, output and stack args", () => {
     expect(parse(args)).toMatchObject({
-      cfnPath: 'template',
-      outputPath: '/path/to/output.ts',
-      stackName: 'stack',
+      cfnPath: "template",
+      outputPath: "/path/to/output.ts",
+      stackName: "stack",
     });
   });
 
-  test('pulls outs output dir correctly', () => {
+  test("pulls outs output dir correctly", () => {
     expect(parse(args)).toMatchObject({
-      outputDir: '/path/to',
+      outputDir: "/path/to",
     });
   });
 
-  test('pulls outs output file correctly', () => {
+  test("pulls outs output file correctly", () => {
     expect(parse(args)).toMatchObject({
-      outputFile: 'output.ts',
+      outputFile: "output.ts",
     });
   });
 
-  test('gets stack name from file if not provided', () => {
+  test("gets stack name from file if not provided", () => {
     const args = {
       args: {
-        template: 'template',
-        output: '/path/to/stack-name.ts',
+        template: "template",
+        output: "/path/to/stack-name.ts",
       },
     };
 
     expect(parse({ ...args })).toMatchObject({
-      stackName: 'StackName',
+      stackName: "StackName",
     });
   });
 });
 
-describe('The validate function', () => {
-  const existsPath = './I-DO-EXIST.md';
-  const doesNotExistPath = './I-DONT-EXIST.md';
+describe("The validate function", () => {
+  const existsPath = "./I-DO-EXIST.md";
+  const doesNotExistPath = "./I-DONT-EXIST.md";
 
   beforeAll(() => {
     if (!fs.existsSync(existsPath)) {
-      fs.writeFileSync(existsPath, 'test');
+      fs.writeFileSync(existsPath, "test");
     }
 
     if (fs.existsSync(doesNotExistPath)) {
@@ -108,13 +109,13 @@ describe('The validate function', () => {
     }
   });
 
-  test('does nothing if the file does exist', () => {
+  test("does nothing if the file does exist", () => {
     expect(() => validate({ cfnPath: existsPath } as Config)).not.toThrow();
   });
 
-  test('throws an error if the file does not exist', () => {
+  test("throws an error if the file does not exist", () => {
     expect(() => validate({ cfnPath: doesNotExistPath } as Config)).toThrow(
-      'File not found - ./I-DONT-EXIST.md'
+      "File not found - ./I-DONT-EXIST.md"
     );
   });
 });

@@ -1,30 +1,28 @@
-import * as fs from 'fs';
-import * as yaml from 'js-yaml';
-import { Config } from './args';
-import { toCamelCase } from 'codemaker';
-import { Imports } from './imports';
-import { CDKTemplate } from './cdk';
-import { camelCaseObjectKeys } from './utils';
+import { readFileSync } from "fs";
+import { toCamelCase } from "codemaker";
+import { safeLoad, Schema, Type } from "js-yaml";
+import type { Config } from "./args";
+import type { CDKTemplate } from "./cdk";
+import { Imports } from "./imports";
+import { camelCaseObjectKeys } from "./utils";
 
 export interface CFNTemplate {
-  Parameters: {
-    [key: string]: { [key: string]: any };
-  };
+  Parameters: Record<string, Record<string, unknown>>;
 }
 
 // TODO: Allow for all CDK tags
-const CDK_SCHEMA = yaml.Schema.create([
-  new yaml.Type('!Ref', {
-    kind: 'scalar',
-    construct: (data) => ({ Ref: data }),
+const CDK_SCHEMA = Schema.create([
+  new Type("!Ref", {
+    kind: "scalar",
+    construct: (data: string) => ({ Ref: data }),
   }),
-  new yaml.Type('!Sub', {
-    kind: 'scalar',
-    construct: (data) => ({ 'Fn::Sub': data }),
+  new Type("!Sub", {
+    kind: "scalar",
+    construct: (data: string) => ({ "Fn::Sub": data }),
   }),
-  new yaml.Type('!GetAZs', {
-    kind: 'scalar',
-    construct: (data) => ({ 'Fn::GetAZs': data }),
+  new Type("!GetAZs", {
+    kind: "scalar",
+    construct: (data: unknown) => ({ "Fn::GetAZs": data }),
   }),
 ]);
 
@@ -42,8 +40,8 @@ export class CfnParser {
   // TODO: Do this a better way
   paramComponents = [
     {
-      type: 'GuStageParameter',
-      names: ['stage', 'stageparameter'],
+      type: "GuStageParameter",
+      names: ["stage", "stageparameter"],
     },
   ];
 
@@ -53,14 +51,18 @@ export class CfnParser {
 
   parse = (): void => {
     try {
-      const f = fs.readFileSync(this.config.cfnPath, 'utf8');
+      const f = readFileSync(this.config.cfnPath, "utf8");
 
       // TODO: Handle json files too
-      const cfn = yaml.safeLoad(f, { schema: CDK_SCHEMA }) as CFNTemplate;
+      const cfn = safeLoad(f, { schema: CDK_SCHEMA }) as CFNTemplate;
 
       this.parseParameters(cfn);
     } catch (e) {
-      throw new Error(`Failed to parse template file - ${e}`);
+      let msg = "Unknown Error";
+      if (e instanceof Error) {
+        msg = e.message;
+      }
+      throw new Error(`Failed to parse template file - ${msg}`);
     }
   };
 
@@ -73,21 +75,21 @@ export class CfnParser {
         parameters.comment = similarConstuct;
       }
 
-      if (parameters.type === 'String') {
-        this.imports.addImport('@guardian/cdk/lib/constructs/core', [
-          'GuStringParameter',
+      if (parameters.type === "String") {
+        this.imports.addImport("@guardian/cdk/lib/constructs/core", [
+          "GuStringParameter",
         ]);
         this.template.Parameters[key] = {
           ...parameters,
-          parameterType: 'GuStringParameter',
+          parameterType: "GuStringParameter",
         };
       } else {
-        this.imports.addImport('@guardian/cdk/lib/constructs/core', [
-          'GuParameter',
+        this.imports.addImport("@guardian/cdk/lib/constructs/core", [
+          "GuParameter",
         ]);
         this.template.Parameters[key] = {
           ...parameters,
-          parameterType: 'GuParameter',
+          parameterType: "GuParameter",
         };
       }
     });

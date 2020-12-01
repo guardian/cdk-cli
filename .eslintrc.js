@@ -1,16 +1,19 @@
 module.exports = {
-  root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  rules: {
-    "@typescript-eslint/camelcase": [
-      "error",
-      { properties: "never", ignoreDestructuring: true },
-    ],
+  env: {
+    es2021: true,
   },
+  extends: "@guardian/eslint-config-typescript",
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 12,
+    tsconfigRootDir: __dirname,
+    project: ["./tsconfig.eslint.json"],
+  },
+  plugins: ["@typescript-eslint"],
+  rules: {
+    "@typescript-eslint/no-inferrable-types": 0,
+    "import/no-namespace": 2,
+  },
+  root: true,
+  ignorePatterns: ["**/*.js", "node_modules"],
 };
