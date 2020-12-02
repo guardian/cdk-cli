@@ -1,6 +1,6 @@
-# cdk-cli
+# CDK CLI
 
-**This tool is a work in progress. It relies on the as-yet-unpublished Guardian CDK library.**
+CDK CLI is a tool to make it easier to get started with [CDK](https://github.com/aws/aws-cdk) using the [@guardian/cdk](https://github.com/guardian/cdk) library.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/cdk-cli.svg)](https://npmjs.org/package/cdk-cli)
