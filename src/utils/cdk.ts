@@ -81,7 +81,10 @@ export class CdkBuilder {
     this.code.line("/* Parameters */");
 
     this.code.line(
-      "// TODO: Consider if any of the helper classes in components/core/parameters.ts file could be used here"
+      "// TODO: Consider if any of the parameter constructs from @guardian/cdk could be used here"
+    );
+    this.code.line(
+      "// https://github.com/guardian/cdk/blob/main/src/constructs/core/parameters.ts"
     );
     this.code.openBlock(`const parameters =`);
 

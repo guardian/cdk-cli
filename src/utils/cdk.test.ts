@@ -111,7 +111,11 @@ describe("The CdkBuilder class", () => {
       );
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         3,
-        "// TODO: Consider if any of the helper classes in components/core/parameters.ts file could be used here"
+        "// TODO: Consider if any of the parameter constructs from @guardian/cdk could be used here"
+      );
+      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+        4,
+        "// https://github.com/guardian/cdk/blob/main/src/constructs/core/parameters.ts"
       );
     });
 
