@@ -6,20 +6,97 @@ describe("The Imports class", () => {
       const imports = new Imports();
       imports.addImport("test", ["one"]);
       expect(imports.imports).toMatchObject({
-        test: ["one"],
+        test: {
+          components: ["one"],
+          types: [],
+        },
       });
     });
 
-    test("merges individual components if the import has already been added using component style", () => {
+    test("adds a type import if it doesn't previously exist", () => {
+      const imports = new Imports();
+      imports.addImport("test", ["one"], true);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: [],
+          types: ["one"],
+        },
+      });
+    });
+
+    test("merges individual components if the import has already been added", () => {
       const imports = new Imports();
       imports.addImport("test", ["one"]);
       expect(imports.imports).toMatchObject({
-        test: ["one"],
+        test: {
+          components: ["one"],
+          types: [],
+        },
       });
 
       imports.addImport("test", ["two"]);
       expect(imports.imports).toMatchObject({
-        test: ["one", "two"],
+        test: {
+          components: ["one", "two"],
+          types: [],
+        },
+      });
+    });
+
+    test("merges individual types if the import has already been added", () => {
+      const imports = new Imports();
+      imports.addImport("test", ["one"], true);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: [],
+          types: ["one"],
+        },
+      });
+
+      imports.addImport("test", ["two"], true);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: [],
+          types: ["one", "two"],
+        },
+      });
+    });
+
+    test("does not add type component if normal component exists", () => {
+      const imports = new Imports();
+      imports.addImport("test", ["one"]);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: ["one"],
+          types: [],
+        },
+      });
+
+      imports.addImport("test", ["one"], true);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: ["one"],
+          types: [],
+        },
+      });
+    });
+
+    test("moves existing type import to component if added as component", () => {
+      const imports = new Imports();
+      imports.addImport("test", ["one"], true);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: [],
+          types: ["one"],
+        },
+      });
+
+      imports.addImport("test", ["one"]);
+      expect(imports.imports).toMatchObject({
+        test: {
+          components: ["one"],
+          types: [],
+        },
       });
     });
   });
