@@ -65,11 +65,17 @@ export class CdkBuilder {
     Object.keys(this.imports.imports)
       .sort()
       .forEach((lib) => {
-        const components = this.imports.imports[lib];
+        const imports = this.imports.imports[lib];
 
-        this.code.line(
-          `import { ${components.sort().join(", ")} } from "${lib}";`
-        );
+        imports.types.length &&
+          this.code.line(
+            `import type { ${imports.types.sort().join(", ")} } from "${lib}";`
+          );
+
+        imports.components.length &&
+          this.code.line(
+            `import { ${imports.components.sort().join(", ")} } from "${lib}";`
+          );
       });
     this.code.line();
   }

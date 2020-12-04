@@ -44,7 +44,7 @@ describe("The CdkBuilder class", () => {
       builder.addImports();
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         2,
-        `import { App, StackProps } from "@aws-cdk/core";`
+        `import type { App, StackProps } from "@aws-cdk/core";`
       );
       expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
         3,
@@ -54,7 +54,10 @@ describe("The CdkBuilder class", () => {
     test("adds imports correctly", () => {
       const imports = new Imports();
       imports.imports = {
-        test: ["Test"],
+        test: {
+          components: ["Test"],
+          types: [],
+        },
       };
       builder.imports = imports;
 
