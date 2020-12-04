@@ -106,19 +106,29 @@ export class CdkBuilder {
       this.code.line(`// ${props.comment}`);
     }
 
-    this.code.indent(`${name}: new ${props.parameterType}(this, "${name}", {`);
+    const propsToRender = Object.entries(props).filter(
+      ([key, val]) => !this.shouldSkipParamProp(key, val)
+    );
 
-    Object.entries(props).forEach((val) => {
-      const pKey = toCamelCase(val[0]);
+    if (!propsToRender.length) {
+      this.code.line(
+        `${name}: new ${props.parameterType}(this, "${name}", {}),`
+      );
+    } else {
+      this.code.indent(
+        `${name}: new ${props.parameterType}(this, "${name}", {`
+      );
 
-      if (!this.shouldSkipParamProp(pKey, val[1])) {
+      propsToRender.forEach(([key, val]) => {
+        const pKey = toCamelCase(key);
+
         this.code.line(
-          [`${pKey}: `, this.formatParam(pKey, val[1]), `,`].join("")
+          [`${pKey}: `, this.formatParam(pKey, val), `,`].join("")
         );
-      }
-    });
+      });
 
-    this.code.unindent(`}),`);
+      this.code.unindent(`}),`);
+    }
   }
 
   formatParam(name: string, value: unknown): unknown {
