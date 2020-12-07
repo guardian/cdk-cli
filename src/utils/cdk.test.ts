@@ -159,7 +159,10 @@ describe("The CdkBuilder class", () => {
     beforeEach(clearMockedCodeMaker);
 
     test("opens and closes the parameter correctly", () => {
-      builder.addParam("test", { parameterType: "GuParameter" });
+      builder.addParam("test", {
+        parameterType: "GuParameter",
+        description: "test",
+      });
       expect(mockedCodeMaker.indent).toHaveBeenNthCalledWith(
         1,
         `test: new GuParameter(this, "test", {`
@@ -188,6 +191,16 @@ describe("The CdkBuilder class", () => {
         `description: "test",`
       );
       expect(mockedCodeMaker.line).toHaveBeenCalledTimes(1);
+    });
+
+    test("renders on one line if there are no props", () => {
+      builder.addParam("test", {
+        parameterType: "GuParameter",
+      });
+      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+        1,
+        `test: new GuParameter(this, "test", {}),`
+      );
     });
   });
 
