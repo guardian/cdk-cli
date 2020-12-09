@@ -10,7 +10,7 @@ node_modules
 
 # This file is created to test the args validation logic
 # It should be removed automatically but let's gitignore it just in case
-EXISTS-*.md
+EXISTS-*
 
 # IDE
 .idea
