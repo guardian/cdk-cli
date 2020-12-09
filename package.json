@@ -60,7 +60,7 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "build": "yarn prepack",
     "test": "jest --detectOpenHandles --runInBand",
-    "lint": "eslint src/** --ext .ts",
+    "lint": "eslint src/** --ext .ts --no-error-on-unmatched-pattern",
     "format": "prettier --write \"src/**/*.ts\"",
     "version": "oclif-dev readme && git add README.md"
   },
