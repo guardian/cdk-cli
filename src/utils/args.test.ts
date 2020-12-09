@@ -88,12 +88,20 @@ describe("The checkPathExists function", () => {
 });
 
 describe("The checkDirectoryIsEmpty function", () => {
+  let alreadyExists = false;
   const emptyBase = "./EXISTS-DIR";
   const emptyPath = join(emptyBase, "/empty");
   const notEmptyPath = join(emptyBase, "/not-empty");
   const notEmptyFile = join(notEmptyPath, "test.md");
 
   beforeAll(() => {
+    if (existsSync(emptyBase)) {
+      alreadyExists = true;
+      throw new Error(
+        `The ${emptyBase} directory already exists. Please remove or change the emptyBase var before continuing.`
+      );
+    }
+
     [emptyBase, emptyPath, notEmptyPath].forEach((path) => {
       if (!existsSync(path)) {
         mkdirSync(path);
@@ -106,7 +114,7 @@ describe("The checkDirectoryIsEmpty function", () => {
   });
 
   afterAll(() => {
-    if (existsSync(emptyBase)) {
+    if (!alreadyExists && existsSync(emptyBase)) {
       rmdirSync(emptyBase, { recursive: true });
     }
   });
