@@ -52,7 +52,7 @@ describe("The MigrateCommand class", () => {
         },
       };
 
-      expect(MigrateCommand.getConfig({ ...args })).toMatchObject({
+      expect(MigrateCommand.getConfig(args)).toMatchObject({
         stackName: "StackName",
       });
     });
