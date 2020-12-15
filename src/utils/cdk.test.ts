@@ -1,5 +1,4 @@
 import type { CodeMaker } from "codemaker";
-import type { Config } from "./args";
 import type { CDKTemplate } from "./cdk";
 import { CdkBuilder } from "./cdk";
 import { Imports } from "./imports";
@@ -20,11 +19,13 @@ const clearMockedCodeMaker = (): void => {
 
 describe("The CdkBuilder class", () => {
   describe("addImport function", () => {
-    const builder = new CdkBuilder(
-      {} as Config,
-      new Imports(),
-      {} as CDKTemplate
-    );
+    const builder = new CdkBuilder({
+      outputDir: "",
+      outputFile: "",
+      stackName: "",
+      imports: new Imports(),
+      template: {} as CDKTemplate,
+    });
     builder.code = (mockedCodeMaker as unknown) as CodeMaker;
 
     beforeEach(clearMockedCodeMaker);
@@ -85,7 +86,13 @@ describe("The CdkBuilder class", () => {
       },
     };
     const mockAddParam = jest.fn();
-    const builder = new CdkBuilder({} as Config, new Imports(), template);
+    const builder = new CdkBuilder({
+      outputDir: "",
+      outputFile: "",
+      stackName: "",
+      imports: new Imports(),
+      template,
+    });
     builder.addParam = mockAddParam;
     builder.code = (mockedCodeMaker as unknown) as CodeMaker;
 
@@ -149,11 +156,13 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("addParam function", () => {
-    const builder = new CdkBuilder(
-      {} as Config,
-      new Imports(),
-      {} as CDKTemplate
-    );
+    const builder = new CdkBuilder({
+      outputDir: "",
+      outputFile: "",
+      stackName: "",
+      imports: new Imports(),
+      template: {} as CDKTemplate,
+    });
     builder.code = (mockedCodeMaker as unknown) as CodeMaker;
 
     beforeEach(clearMockedCodeMaker);
@@ -205,11 +214,13 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("formatParam function", () => {
-    const builder = new CdkBuilder(
-      {} as Config,
-      new Imports(),
-      {} as CDKTemplate
-    );
+    const builder = new CdkBuilder({
+      outputDir: "",
+      outputFile: "",
+      stackName: "",
+      imports: new Imports(),
+      template: {} as CDKTemplate,
+    });
 
     test("formats noEcho values correctly", () => {
       expect(builder.formatParam("noEcho", true)).toBe(true);
@@ -227,11 +238,13 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("shouldSkipParamProp function", () => {
-    const builder = new CdkBuilder(
-      {} as Config,
-      new Imports(),
-      {} as CDKTemplate
-    );
+    const builder = new CdkBuilder({
+      outputDir: "",
+      outputFile: "",
+      stackName: "",
+      imports: new Imports(),
+      template: {} as CDKTemplate,
+    });
 
     test("returns true if the key is one to skip", () => {
       expect(builder.shouldSkipParamProp("comment", "this is a comment")).toBe(

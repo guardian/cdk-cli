@@ -1,7 +1,6 @@
 import { readFileSync } from "fs";
 import { toCamelCase } from "codemaker";
 import { safeLoad, Schema, Type } from "js-yaml";
-import type { Config } from "./args";
 import type { CDKTemplate } from "./cdk";
 import { Imports } from "./imports";
 import { camelCaseObjectKeys } from "./utils";
@@ -27,7 +26,7 @@ const CDK_SCHEMA = Schema.create([
 ]);
 
 export class CfnParser {
-  config: Config;
+  cfnPath: string;
 
   // TODO: Make this its own class so that we can do addParameter?
   //       Then the builder would be part of that?
@@ -45,13 +44,13 @@ export class CfnParser {
     },
   ];
 
-  constructor(config: Config) {
-    this.config = config;
+  constructor(cfnPath: string) {
+    this.cfnPath = cfnPath;
   }
 
   parse = (): void => {
     try {
-      const f = readFileSync(this.config.cfnPath, "utf8");
+      const f = readFileSync(this.cfnPath, "utf8");
 
       // TODO: Handle json files too
       const cfn = safeLoad(f, { schema: CDK_SCHEMA }) as CFNTemplate;
@@ -105,9 +104,9 @@ export class CfnParser {
 }
 
 export const parse = (
-  config: Config
+  cfnPath: string
 ): { imports: Imports; template: CDKTemplate } => {
-  const parser = new CfnParser(config);
+  const parser = new CfnParser(cfnPath);
   parser.parse();
   return {
     imports: parser.imports,

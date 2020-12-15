@@ -1,7 +1,6 @@
 import fs from "fs";
 import yaml from "js-yaml";
 import { mocked } from "ts-jest/utils";
-import type { Config } from "./args";
 import { CfnParser } from "./cfn";
 import { Imports } from "./imports";
 
@@ -14,7 +13,7 @@ const mockedYaml = mocked(yaml, true);
 describe("The CfnParser class", () => {
   describe("parse function", () => {
     const mockParseParameters = jest.fn();
-    const parser = new CfnParser({ cfnPath: "test" } as Config);
+    const parser = new CfnParser("test");
     parser.parseParameters = mockParseParameters;
 
     beforeEach(() => {
@@ -48,7 +47,7 @@ describe("The CfnParser class", () => {
   });
 
   describe("parseParameter function", () => {
-    const parser = new CfnParser({} as Config);
+    const parser = new CfnParser("test");
 
     beforeEach(() => {
       parser.template = {
@@ -151,7 +150,7 @@ describe("The CfnParser class", () => {
   });
 
   describe("getSimilarConstructs function", () => {
-    const parser = new CfnParser({} as Config);
+    const parser = new CfnParser("test");
     const expectedComment = `Your parameter looks similar to GuStageParameter. Consider using that instead.`;
 
     test("returns the correct comment when name is stage", () => {
