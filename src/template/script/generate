@@ -11,7 +11,6 @@ OUTPUT_DIR="${ROOT_DIR}/cdk.out"
 
 if [[ -z $APP ]]; then
   echo -e "\033[31mPass the app you'd like to generate Cloudformation for to this script"
-  echo -e "e.g. $0 grafana\033[0m"
   exit 1
 fi
 
