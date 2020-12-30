@@ -26,7 +26,9 @@ describe("The cancellablePrompts function", () => {
   test("adds the onCancel function", async () => {
     await cancellablePrompts(question);
 
-    expect(Object.keys(mockedPrompts.mock.calls[0][1])).toEqual(["onCancel"]);
+    expect(
+      Object.keys(mockedPrompts.mock.calls[0][1] as Record<string, unknown>)
+    ).toEqual(["onCancel"]);
   });
 
   test("merges other options", async () => {
@@ -36,10 +38,9 @@ describe("The cancellablePrompts function", () => {
       },
     });
 
-    expect(Object.keys(mockedPrompts.mock.calls[0][1])).toEqual([
-      "onCancel",
-      "onSubmit",
-    ]);
+    expect(
+      Object.keys(mockedPrompts.mock.calls[0][1] as Record<string, unknown>)
+    ).toEqual(["onCancel", "onSubmit"]);
   });
 
   test("overrides onCancel if passed through", async () => {
@@ -47,8 +48,10 @@ describe("The cancellablePrompts function", () => {
       onCancel: () => "test",
     });
 
-    expect(
-      mockedPrompts.mock.calls[0][1].onCancel({} as PromptObject, "b")
-    ).toBe("test");
+    const options = mockedPrompts.mock.calls[0][1] as {
+      onCancel: (a: PromptObject, b: unknown) => void;
+    };
+
+    expect(options.onCancel({} as PromptObject, "b")).toBe("test");
   });
 });
