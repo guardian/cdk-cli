@@ -55,7 +55,7 @@ export class NewCommand extends Command {
     return {
       outputPath: args.output,
       outputDir: dirname(args.output),
-      outputFile: outputFile,
+      outputFile: outputFile.endsWith(".ts") ? outputFile : `${outputFile}.ts`,
       stackName: args.stack ?? getStackNameFromFileName(outputFile),
     };
   };

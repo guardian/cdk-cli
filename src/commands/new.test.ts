@@ -28,6 +28,16 @@ describe("The NewCommand class", () => {
       });
     });
 
+    test("adds file extension to output file if not present", () => {
+      expect(
+        NewCommand.getConfig({
+          args: { ...args.args, output: "/path/to/output" },
+        })
+      ).toMatchObject({
+        outputFile: "output.ts",
+      });
+    });
+
     test("gets stack name from file if not provided", () => {
       const args = {
         args: {
