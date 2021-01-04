@@ -76,3 +76,20 @@ OPTIONS
 _See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/migrate.ts)_
 
 <!-- commandsstop -->
+
+## Development
+
+We follow the [`script/task`](https://github.com/github/scripts-to-rule-them-all) pattern,
+find useful scripts within the [`script`](./script) directory for common tasks.
+
+- `./script/setup` to install dependencies
+- `./script/lint` to lint the code using ESLint
+- `./script/test` to run the Jest unit tests
+- `./script/build` to compile TypeScript to JS
+
+There are also some other commands defined in `package.json`:
+
+- `yarn lint --fix` attempt to autofix any linter errors
+- `yarn format` format the code using Prettier
+
+However, it's advised you configure your IDE to format on save to avoid horrible "correct linting" commits.
