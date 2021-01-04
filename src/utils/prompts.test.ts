@@ -32,11 +32,7 @@ describe("The cancellablePrompts function", () => {
   });
 
   test("merges other options", async () => {
-    await cancellablePrompts(question, {
-      onSubmit: () => {
-        return true;
-      },
-    });
+    await cancellablePrompts(question, { onSubmit: () => true });
 
     expect(
       Object.keys(mockedPrompts.mock.calls[0][1] as Record<string, unknown>)
