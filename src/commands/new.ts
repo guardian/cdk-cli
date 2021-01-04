@@ -4,11 +4,11 @@
 
 import { basename, dirname } from "path";
 import { Command, flags } from "@oclif/command";
-import prompts from "prompts";
 import { getStackNameFromFileName } from "../utils/args";
 import type { CDKTemplate } from "../utils/cdk";
 import { construct } from "../utils/cdk";
 import { Imports } from "../utils/imports";
+import { cancellablePrompts } from "../utils/prompts";
 
 interface NewCommandConfig {
   outputPath: string;
@@ -69,7 +69,7 @@ export class NewCommand extends Command {
       `New stack ${config.stackName} will be written to ${config.outputPath}`
     );
 
-    const response = await prompts({
+    const response = await cancellablePrompts({
       type: "text",
       name: "stackName",
       message: "Name of the Stack",
@@ -90,7 +90,7 @@ export class NewCommand extends Command {
   async getParameters(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition -- while true for the win, what could go wrong?
     while (true) {
-      const nameResponse = await prompts({
+      const nameResponse = await cancellablePrompts({
         type: "text",
         name: "parameterName",
         message: "Enter the name of the parameter (or hit enter to finish):",
@@ -101,7 +101,7 @@ export class NewCommand extends Command {
       const name = nameResponse.parameterName;
 
       // TODO: Can we be more clever here about the available types?
-      const typeResponse = await prompts({
+      const typeResponse = await cancellablePrompts({
         type: "text",
         name: "parameterType",
         message: "Enter the parameter type:",
