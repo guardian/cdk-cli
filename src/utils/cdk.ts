@@ -59,8 +59,8 @@ export class CdkBuilder {
     await this.code.save(this.config.outputDir);
   }
 
-  // TODO: Update this for our preferred style of imports
   addImports(): void {
+    // TODO: Remove this line and add a new line at the end of the optional comment
     this.code.line();
     Object.keys(this.imports.imports)
       .sort()
