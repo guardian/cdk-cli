@@ -21,7 +21,7 @@
     "@guardian/eslint-config-typescript": "^0.4.1",
     "@oclif/dev-cli": "^1",
     "@types/jest": "^26.0.19",
-    "@types/js-yaml": "^3.12.5",
+    "@types/js-yaml": "^4.0.0",
     "@types/node": "14.14.9",
     "@types/prompts": "^2.0.9",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
