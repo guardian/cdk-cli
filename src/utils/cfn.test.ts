@@ -18,7 +18,7 @@ describe("The CfnParser class", () => {
 
     beforeEach(() => {
       mockedFs.readFileSync.mockClear();
-      mockedYaml.safeLoad.mockClear();
+      mockedYaml.load.mockClear();
       mockParseParameters.mockClear();
     });
 
@@ -29,7 +29,7 @@ describe("The CfnParser class", () => {
 
     test("tries to parse the yaml", () => {
       parser.parse();
-      expect(mockedYaml.safeLoad).toHaveBeenCalled();
+      expect(mockedYaml.load).toHaveBeenCalled();
     });
 
     test("calls parseParameters", () => {
