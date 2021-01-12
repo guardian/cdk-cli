@@ -1,77 +1,11 @@
-import type { CodeMaker } from "codemaker";
-import type { CDKTemplate } from "./cdk";
-import { CdkBuilder } from "./cdk";
+import { MockCodeMaker } from "../../test/utils/codemaker";
 import { Imports } from "./imports";
+import type { StackTemplate } from "./stack";
+import { StackBuilder } from "./stack";
 
-const mockedCodeMaker: Record<string, jest.Mock> = {
-  line: jest.fn(),
-  openBlock: jest.fn(),
-  closeBlock: jest.fn(),
-  indent: jest.fn(),
-  unindent: jest.fn(),
-};
-
-const clearMockedCodeMaker = (): void => {
-  Object.keys(mockedCodeMaker).forEach((key) =>
-    mockedCodeMaker[key].mockClear()
-  );
-};
-
-describe("The CdkBuilder class", () => {
-  describe("addImport function", () => {
-    const builder = new CdkBuilder({
-      outputDir: "",
-      outputFile: "",
-      stackName: "",
-      imports: new Imports(),
-      template: {} as CDKTemplate,
-    });
-    builder.code = (mockedCodeMaker as unknown) as CodeMaker;
-
-    beforeEach(clearMockedCodeMaker);
-
-    afterEach(() => {
-      builder.imports = new Imports();
-    });
-
-    test("adds a blank line at the start and end of the imports section", () => {
-      builder.addImports();
-
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(1);
-      expect(mockedCodeMaker.line).toHaveBeenLastCalledWith();
-    });
-
-    test("always adds the @aws-cdk/core library first", () => {
-      builder.addImports();
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        2,
-        `import type { App, StackProps } from "@aws-cdk/core";`
-      );
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        3,
-        `import { GuStack } from "@guardian/cdk/lib/constructs/core";`
-      );
-    });
-    test("adds imports correctly", () => {
-      const imports = new Imports();
-      imports.imports = {
-        test: {
-          components: ["Test"],
-          types: [],
-        },
-      };
-      builder.imports = imports;
-
-      builder.addImports();
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
-        2,
-        `import { Test } from "test";`
-      );
-    });
-  });
-
+describe("The StackBuilder class", () => {
   describe("addParams function", () => {
-    const template: CDKTemplate = {
+    const template: StackTemplate = {
       Parameters: {
         test1: {
           parameterType: "GuParameter",
@@ -86,7 +20,7 @@ describe("The CdkBuilder class", () => {
       },
     };
     const mockAddParam = jest.fn();
-    const builder = new CdkBuilder({
+    const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
       stackName: "",
@@ -94,11 +28,12 @@ describe("The CdkBuilder class", () => {
       template,
     });
     builder.addParam = mockAddParam;
-    builder.code = (mockedCodeMaker as unknown) as CodeMaker;
+    const codemaker = new MockCodeMaker();
+    builder.code = codemaker.codemaker;
 
     beforeEach(() => {
       builder.template = template;
-      clearMockedCodeMaker();
+      codemaker.clear();
       mockAddParam.mockClear();
     });
 
@@ -108,22 +43,22 @@ describe("The CdkBuilder class", () => {
       };
       builder.addParams();
 
-      expect(mockedCodeMaker.line).toHaveBeenCalledTimes(0);
+      expect(codemaker._codemaker.line).toHaveBeenCalledTimes(0);
     });
 
     test("adds parameters comments", () => {
       builder.addParams();
 
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(1);
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(1);
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         2,
         "/* Parameters */"
       );
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         3,
         "// TODO: Consider if any of the parameter constructs from @guardian/cdk could be used here"
       );
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         4,
         "// https://github.com/guardian/cdk/blob/main/src/constructs/core/parameters.ts"
       );
@@ -132,11 +67,11 @@ describe("The CdkBuilder class", () => {
     test("creates parameters object", () => {
       builder.addParams();
 
-      expect(mockedCodeMaker.openBlock).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.openBlock).toHaveBeenNthCalledWith(
         1,
         "const parameters ="
       );
-      expect(mockedCodeMaker.closeBlock).toHaveBeenNthCalledWith(1, "};");
+      expect(codemaker._codemaker.closeBlock).toHaveBeenNthCalledWith(1, "};");
     });
 
     test("adds parameters as required parameters object", () => {
@@ -156,27 +91,28 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("addParam function", () => {
-    const builder = new CdkBuilder({
+    const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
       stackName: "",
       imports: new Imports(),
-      template: {} as CDKTemplate,
+      template: {} as StackTemplate,
     });
-    builder.code = (mockedCodeMaker as unknown) as CodeMaker;
+    const codemaker = new MockCodeMaker();
+    builder.code = codemaker.codemaker;
 
-    beforeEach(clearMockedCodeMaker);
+    beforeEach(() => codemaker.clear());
 
     test("opens and closes the parameter correctly", () => {
       builder.addParam("test", {
         parameterType: "GuParameter",
         description: "test",
       });
-      expect(mockedCodeMaker.indent).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.indent).toHaveBeenNthCalledWith(
         1,
         `test: new GuParameter(this, "test", {`
       );
-      expect(mockedCodeMaker.unindent).toHaveBeenNthCalledWith(1, `}),`);
+      expect(codemaker._codemaker.unindent).toHaveBeenNthCalledWith(1, `}),`);
     });
 
     test("a comment is added if it exists", () => {
@@ -184,7 +120,7 @@ describe("The CdkBuilder class", () => {
         comment: "This is a comment",
         parameterType: "GuParameter",
       });
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         1,
         "// This is a comment"
       );
@@ -195,18 +131,18 @@ describe("The CdkBuilder class", () => {
         parameterType: "GuParameter",
         description: "test",
       });
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         1,
         `description: "test",`
       );
-      expect(mockedCodeMaker.line).toHaveBeenCalledTimes(1);
+      expect(codemaker._codemaker.line).toHaveBeenCalledTimes(1);
     });
 
     test("renders on one line if there are no props", () => {
       builder.addParam("test", {
         parameterType: "GuParameter",
       });
-      expect(mockedCodeMaker.line).toHaveBeenNthCalledWith(
+      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         1,
         `test: new GuParameter(this, "test", {}),`
       );
@@ -214,12 +150,12 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("formatParam function", () => {
-    const builder = new CdkBuilder({
+    const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
       stackName: "",
       imports: new Imports(),
-      template: {} as CDKTemplate,
+      template: {} as StackTemplate,
     });
 
     test("formats noEcho values correctly", () => {
@@ -238,12 +174,12 @@ describe("The CdkBuilder class", () => {
   });
 
   describe("shouldSkipParamProp function", () => {
-    const builder = new CdkBuilder({
+    const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
       stackName: "",
       imports: new Imports(),
-      template: {} as CDKTemplate,
+      template: {} as StackTemplate,
     });
 
     test("returns true if the key is one to skip", () => {

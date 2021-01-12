@@ -2,51 +2,47 @@ import { NewCommand } from "./new";
 
 describe("The NewCommand class", () => {
   describe("getConfig function", () => {
+    beforeAll(() => {
+      NewCommand.validateConfig = jest.fn();
+    });
+
+    afterAll(() => {
+      ((NewCommand.validateConfig as unknown) as jest.Mock).mockRestore();
+    });
+
     const args = {
       args: {
-        output: "/path/to/output.ts",
-        stack: "stack",
+        output: "/path/to/output",
+        app: "App",
+        stack: "StackName",
+      },
+      flags: {
+        "multi-app": false,
       },
     };
 
-    test("pulls out output and stack args", () => {
+    test("pulls outs direct args correctly", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
-        outputPath: "/path/to/output.ts",
-        stackName: "stack",
-      });
-    });
-
-    test("pulls outs output dir correctly", () => {
-      expect(NewCommand.getConfig(args)).toMatchObject({
-        outputDir: "/path/to",
-      });
-    });
-
-    test("pulls outs output file correctly", () => {
-      expect(NewCommand.getConfig(args)).toMatchObject({
-        outputFile: "output.ts",
-      });
-    });
-
-    test("adds file extension to output file if not present", () => {
-      expect(
-        NewCommand.getConfig({
-          args: { ...args.args, output: "/path/to/output" },
-        })
-      ).toMatchObject({
-        outputFile: "output.ts",
-      });
-    });
-
-    test("gets stack name from file if not provided", () => {
-      const args = {
-        args: {
-          output: "/path/to/stack-name.ts",
-        },
-      };
-
-      expect(NewCommand.getConfig({ ...args })).toMatchObject({
+        cdkDir: "/path/to/output",
+        multiApp: false,
+        appName: "App",
         stackName: "StackName",
+      });
+    });
+
+    test("pulls outs computed values correctly", () => {
+      expect(NewCommand.getConfig(args)).toMatchObject({
+        appPath: `/path/to/output/bin/app.ts`,
+        stackPath: `/path/to/output/lib/stack-name.ts`,
+      });
+    });
+
+    test("pulls outs computed values correctly if multiApp is true", () => {
+      expect(
+        NewCommand.getConfig({ ...args, flags: { "multi-app": true } })
+      ).toMatchObject({
+        appPath: `/path/to/output/bin/app.ts`,
+        stackPath: `/path/to/output/lib/app/stack-name.ts`,
       });
     });
   });

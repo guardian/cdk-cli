@@ -46,9 +46,13 @@ export class InitCommand extends Command {
       outputDir: args.output,
     };
 
-    checkDirectoryIsEmpty(config.outputDir);
+    InitCommand.validateConfig(config);
 
     return config;
+  };
+
+  static validateConfig = (config: InitCommandConfig): void => {
+    checkDirectoryIsEmpty(config.outputDir);
   };
 
   templateDir = `${__dirname}/../template`;

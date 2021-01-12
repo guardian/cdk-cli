@@ -1,59 +1,69 @@
-import { existsSync, unlinkSync, writeFileSync } from "fs";
 import { MigrateCommand } from "./migrate";
 
 describe("The MigrateCommand class", () => {
   describe("getConfig function", () => {
-    const existsPath = "./EXISTS-MIGRATE.md";
     beforeAll(() => {
-      if (!existsSync(existsPath)) {
-        writeFileSync(existsPath, "test");
-      }
+      MigrateCommand.validateConfig = jest.fn();
     });
 
     afterAll(() => {
-      if (existsSync(existsPath)) {
-        unlinkSync(existsPath);
-      }
+      ((MigrateCommand.validateConfig as unknown) as jest.Mock).mockRestore();
     });
 
     const args = {
       args: {
-        template: existsPath,
-        output: "/path/to/output.ts",
-        stack: "stack",
+        template: "/path/to/template.ts",
+        output: "/path/to/output",
+        app: "App",
+        stack: "StackName",
+      },
+      flags: {
+        "multi-app": false,
       },
     };
 
-    test("pulls outs template, output and stack args", () => {
+    test("pulls outs direct args correctly", () => {
       expect(MigrateCommand.getConfig(args)).toMatchObject({
-        cfnPath: existsPath,
-        outputPath: "/path/to/output.ts",
-        stackName: "stack",
+        cfnPath: "/path/to/template.ts",
+        cdkDir: "/path/to/output",
+        appName: "App",
+        stackName: "StackName",
+        multiApp: false,
       });
     });
 
-    test("pulls outs output dir correctly", () => {
+    test("pulls outs computed values correctly", () => {
       expect(MigrateCommand.getConfig(args)).toMatchObject({
-        outputDir: "/path/to",
+        cfnFile: "template.ts",
+        appPath: `/path/to/output/bin/app.ts`,
+        stackPath: `/path/to/output/lib/stack-name.ts`,
       });
     });
 
-    test("pulls outs output file correctly", () => {
-      expect(MigrateCommand.getConfig(args)).toMatchObject({
-        outputFile: "output.ts",
+    test("pulls outs computed values correctly if multiApp is true", () => {
+      expect(
+        MigrateCommand.getConfig({ ...args, flags: { "multi-app": true } })
+      ).toMatchObject({
+        cfnFile: "template.ts",
+        appPath: `/path/to/output/bin/app.ts`,
+        stackPath: `/path/to/output/lib/app/stack-name.ts`,
       });
     });
 
     test("gets stack name from file if not provided", () => {
       const args = {
         args: {
-          template: existsPath,
-          output: "/path/to/stack-name.ts",
+          template: "/path/to/template.ts",
+          output: "/path/to",
+          app: "app",
+        },
+        flags: {
+          "multi-app": false,
         },
       };
 
       expect(MigrateCommand.getConfig(args)).toMatchObject({
-        stackName: "StackName",
+        stackName: "Template",
       });
     });
   });

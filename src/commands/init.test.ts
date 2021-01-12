@@ -1,16 +1,16 @@
 import { InitCommand } from "./init";
 
-describe("The NewCommand class", () => {
+describe("The InitCommand class", () => {
   describe("getConfig function", () => {
     const args = {
       args: {
-        output: "./test",
+        output: "./cdk",
       },
     };
 
     test("pulls outs output dir correctly", () => {
       expect(InitCommand.getConfig(args)).toMatchObject({
-        outputDir: "./test",
+        outputDir: "./cdk",
       });
     });
   });
