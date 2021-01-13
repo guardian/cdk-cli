@@ -6,10 +6,11 @@
 /package-lock.json
 /tmp
 node_modules
+!src/template/*
 
 # This file is created to test the args validation logic
 # It should be removed automatically but let's gitignore it just in case
-EXISTS-*.md
+EXISTS-*
 
 # IDE
 .idea

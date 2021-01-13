@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { toPascalCase } from "codemaker";
 
 export const getStackNameFromFileName = (filename: string): string => {
@@ -14,5 +14,11 @@ export const getStackNameFromFileName = (filename: string): string => {
 export const checkPathExists = (path: string): void => {
   if (!existsSync(path)) {
     throw new Error(`File not found - ${path}`);
+  }
+};
+
+export const checkDirectoryIsEmpty = (path: string): void => {
+  if (existsSync(path) && readdirSync(path).length > 0) {
+    throw new Error(`Directory ${path} is not empty`);
   }
 };

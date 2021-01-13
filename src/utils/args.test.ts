@@ -1,5 +1,16 @@
-import { existsSync, unlinkSync, writeFileSync } from "fs";
-import { checkPathExists, getStackNameFromFileName } from "./args";
+import {
+  existsSync,
+  mkdirSync,
+  rmdirSync,
+  unlinkSync,
+  writeFileSync,
+} from "fs";
+import { join } from "path";
+import {
+  checkDirectoryIsEmpty,
+  checkPathExists,
+  getStackNameFromFileName,
+} from "./args";
 
 describe("The getStackNameFromFileName function", () => {
   test("strips file extension", () => {
@@ -72,6 +83,49 @@ describe("The checkPathExists function", () => {
   test("throws an error if the file does not exist", () => {
     expect(() => checkPathExists(doesNotExistPath)).toThrow(
       "File not found - ./I-DONT-EXIST.md"
+    );
+  });
+});
+
+describe("The checkDirectoryIsEmpty function", () => {
+  let alreadyExists = false;
+  const emptyBase = "./EXISTS-DIR";
+  const emptyPath = join(emptyBase, "/empty");
+  const notEmptyPath = join(emptyBase, "/not-empty");
+  const notEmptyFile = join(notEmptyPath, "test.md");
+
+  beforeAll(() => {
+    if (existsSync(emptyBase)) {
+      alreadyExists = true;
+      throw new Error(
+        `The ${emptyBase} directory already exists. Please remove or change the emptyBase var before continuing.`
+      );
+    }
+
+    [emptyBase, emptyPath, notEmptyPath].forEach((path) => {
+      if (!existsSync(path)) {
+        mkdirSync(path);
+      }
+    });
+
+    if (!existsSync(notEmptyFile)) {
+      writeFileSync(notEmptyFile, "test");
+    }
+  });
+
+  afterAll(() => {
+    if (!alreadyExists && existsSync(emptyBase)) {
+      rmdirSync(emptyBase, { recursive: true });
+    }
+  });
+
+  test("does nothing if the directory is empty", () => {
+    expect(() => checkDirectoryIsEmpty(emptyPath)).not.toThrow();
+  });
+
+  test("throws an error if the directory is not empty", () => {
+    expect(() => checkDirectoryIsEmpty(notEmptyPath)).toThrow(
+      "Directory EXISTS-DIR/not-empty is not empty"
     );
   });
 });
