@@ -2,6 +2,8 @@
 
 CDK CLI is a tool to make it easier to get started with [CDK](https://github.com/aws/aws-cdk) using the [@guardian/cdk](https://github.com/guardian/cdk) library.
 
+**This project is still in the early stages of development and may not be stable**
+
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/cdk-cli.svg)](https://npmjs.org/package/cdk-cli)
 [![Downloads/week](https://img.shields.io/npm/dw/cdk-cli.svg)](https://npmjs.org/package/cdk-cli)
@@ -9,6 +11,7 @@ CDK CLI is a tool to make it easier to get started with [CDK](https://github.com
 
 <!-- toc -->
 
+- [CDK CLI](#cdk-cli)
 - [Usage](#usage)
 - [Commands](#commands)
 <!-- tocstop -->
@@ -22,7 +25,7 @@ $ npm install -g @guardian/cdk-cli
 $ cdk-cli COMMAND
 running command...
 $ cdk-cli (-v|--version|version)
-@guardian/cdk-cli/0.0.0 darwin-x64 node-v10.15.3
+@guardian/cdk-cli/0.0.0 darwin-x64 node-v14.15.1
 $ cdk-cli --help [COMMAND]
 USAGE
   $ cdk-cli COMMAND
@@ -36,7 +39,9 @@ USAGE
 <!-- commands -->
 
 - [`cdk-cli help [COMMAND]`](#cdk-cli-help-command)
-- [`cdk-cli migrate TEMPLATE OUTPUT STACK`](#cdk-cli-migrate-template-output-stack)
+- [`cdk-cli init [OUTPUT]`](#cdk-cli-init-output)
+- [`cdk-cli migrate TEMPLATE OUTPUT [STACK]`](#cdk-cli-migrate-template-output-stack)
+- [`cdk-cli new OUTPUT [STACK]`](#cdk-cli-new-output-stack)
 
 ## `cdk-cli help [COMMAND]`
 
@@ -53,20 +58,38 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.0/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 
-## `cdk-cli migrate TEMPLATE OUTPUT STACK`
+## `cdk-cli init [OUTPUT]`
+
+Creates a new directory containing boilerplate configuration
+
+```
+USAGE
+  $ cdk-cli init [OUTPUT]
+
+ARGUMENTS
+  OUTPUT  [default: ./cdk] The path of the new directory to create. Defaults to ./cdk
+
+OPTIONS
+  -h, --help     show CLI help
+  -v, --version  show CLI version
+```
+
+_See code: [src/commands/init.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/init.ts)_
+
+## `cdk-cli migrate TEMPLATE OUTPUT [STACK]`
 
 Migrates from a cloudformation template to Guardian flavoured CDK
 
 ```
 USAGE
-  $ cdk-cli migrate TEMPLATE OUTPUT STACK
+  $ cdk-cli migrate TEMPLATE OUTPUT [STACK]
 
 ARGUMENTS
   TEMPLATE  The template file to migrate
   OUTPUT    The file to output CDK to
-  STACK     The name to give the stack
+  STACK     A name to give the stack. Defaults to match the filename.
 
 OPTIONS
   -h, --help     show CLI help
@@ -74,6 +97,25 @@ OPTIONS
 ```
 
 _See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/migrate.ts)_
+
+## `cdk-cli new OUTPUT [STACK]`
+
+Creates a new CDK stack
+
+```
+USAGE
+  $ cdk-cli new OUTPUT [STACK]
+
+ARGUMENTS
+  OUTPUT  The file to output CDK to
+  STACK   A name to give the stack. Defaults to match the filename.
+
+OPTIONS
+  -h, --help     show CLI help
+  -v, --version  show CLI version
+```
+
+_See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/new.ts)_
 
 <!-- commandsstop -->
 
