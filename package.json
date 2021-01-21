@@ -26,6 +26,7 @@
     "@types/prompts": "^2.0.9",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
@@ -59,7 +60,8 @@
   },
   "repository": "guardian/cdk-cli",
   "scripts": {
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b && yarn copy-files && oclif-dev readme",
+    "copy-files": "copyfiles -a -u 1 \"./src/template/**/*\" lib",
     "build": "yarn prepack",
     "test": "jest --detectOpenHandles --runInBand",
     "lint": "eslint src/** --ext .ts --no-error-on-unmatched-pattern",
