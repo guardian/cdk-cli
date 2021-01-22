@@ -1,5 +1,10 @@
 import { MockCodeMaker } from "../../test/utils/codemaker";
-import { Imports, newAppImports, newStackImports } from "./imports";
+import {
+  Imports,
+  newAppImports,
+  newStackImports,
+  newTestImports,
+} from "./imports";
 
 describe("The Imports class", () => {
   describe("addImport function", () => {
@@ -283,6 +288,35 @@ describe("The newAppImports function", () => {
   test("adds the correct stack import when multiapp", () => {
     const imports = newAppImports("StackName", "App", true);
     expect(imports.imports["../lib/app/stack-name"]).toEqual({
+      types: [],
+      components: ["StackName"],
+    });
+  });
+});
+
+describe("The newTestImports function", () => {
+  test("adds the correct initial imports", () => {
+    const imports = newTestImports("stack");
+    expect(imports.imports["@aws-cdk/assert"]).toEqual({
+      types: [],
+      components: ["SynthUtils"],
+    });
+
+    expect(imports.imports["@aws-cdk/core"]).toEqual({
+      types: [],
+      components: ["App"],
+    });
+
+    expect(imports.imports["@aws-cdk/assert/jest"]).toEqual({
+      basic: true,
+      types: [],
+      components: [],
+    });
+  });
+
+  test("adds the correct stack import", () => {
+    const imports = newTestImports("StackName");
+    expect(imports.imports["./stack-name"]).toEqual({
       types: [],
       components: ["StackName"],
     });

@@ -116,3 +116,25 @@ export const newAppImports = (
 
   return imports;
 };
+
+export const newTestImports = (name: string): Imports => {
+  const imports = new Imports({
+    "@aws-cdk/assert/jest": {
+      types: [],
+      components: [],
+      basic: true,
+    },
+    "@aws-cdk/assert": {
+      types: [],
+      components: ["SynthUtils"],
+    },
+    "@aws-cdk/core": {
+      types: [],
+      components: ["App"],
+    },
+  });
+
+  imports.addImport(`./${kebabCase(name)}`, [name]);
+
+  return imports;
+};
