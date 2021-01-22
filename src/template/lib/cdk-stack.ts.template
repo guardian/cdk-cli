@@ -1,8 +1,0 @@
-import type { App, StackProps } from "@aws-cdk/core";
-import { GuStack } from "@guardian/cdk/lib/constructs/core";
-
-export class CdkStack extends GuStack {
-  constructor(scope: App, id: string, props?: StackProps) {
-    super(scope, id, props);
-  }
-}

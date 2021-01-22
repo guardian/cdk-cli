@@ -81,7 +81,9 @@ export class InitCommand extends Command {
     for (const file of readdirSync(sourcePath)) {
       const path = join(sourcePath, file);
 
-      if (lstatSync(path).isDirectory()) {
+      if (path.endsWith(".ignore")) {
+        continue;
+      } else if (lstatSync(path).isDirectory()) {
         const nestedTargetPath = join(targetPath, file);
         if (!existsSync(nestedTargetPath)) {
           mkdirSync(nestedTargetPath);
