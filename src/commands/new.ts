@@ -13,9 +13,9 @@ import {
   newTestImports,
 } from "../utils/imports";
 import { cancellablePrompts } from "../utils/prompts";
+import { constructTest } from "../utils/snapshot";
 import type { StackTemplate } from "../utils/stack";
 import { constructStack } from "../utils/stack";
-import { constructTest } from "../utils/snapshot";
 
 interface NewCommandConfig {
   cdkDir: string;
