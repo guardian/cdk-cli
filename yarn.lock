@@ -335,17 +335,17 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@guardian/eslint-config-typescript@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@guardian/eslint-config-typescript/-/eslint-config-typescript-0.4.1.tgz#f983b6b90a4a57e06ce8a9beb52881b7992e877e"
-  integrity sha512-2wzlE27sw+513dgCyN+Mf6/byLOghyqTfy1gmSrGZVXEiU9br+4Q0CwFHBEzR+Bnie2zjK1q/b0DqqI4V8x1PQ==
+"@guardian/eslint-config-typescript@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@guardian/eslint-config-typescript/-/eslint-config-typescript-0.4.2.tgz#085ff16e4b340386f9b28107ef83f2b03561c7f5"
+  integrity sha512-PrM0fhsz1RbV+iQHnJyShzzX7eenjD6ylSCD7xSqVL1Mwfl8UoNDoxlpcK2N4p7zupP5EfzzZZSvrqmD9Hxt1A==
   dependencies:
-    "@guardian/eslint-config" "^0.4.0"
+    "@guardian/eslint-config" "^0.4.2"
 
-"@guardian/eslint-config@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@guardian/eslint-config/-/eslint-config-0.4.0.tgz#1a0a40176f7115849351a3fd0d05028b33e17d42"
-  integrity sha512-B4P84JFTG5JlpgIiOFUPNJ5w9a/VpDfKftWFYaIMdkCRpgDXOhxiZfaBMiP5/D1RsRMSvi2bg3JemS5ueGlOcg==
+"@guardian/eslint-config@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@guardian/eslint-config/-/eslint-config-0.4.2.tgz#0f07c3b951e0b5730ad3a3423d8cc508ff2c431e"
+  integrity sha512-zDXdnGhY+5IomMc0zVLOquaxylWEFjWJz4Beg2UP+U2qPjr4yVVe2ekEjZM+hayADHIs9bH7OlQ8s2EHSgfK2g==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
