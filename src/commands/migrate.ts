@@ -9,8 +9,8 @@ import {
 } from "../utils/args";
 import { parse } from "../utils/cfn";
 import { newAppImports, newTestImports } from "../utils/imports";
-import { constructStack } from "../utils/stack";
 import { constructTest } from "../utils/snapshot";
+import { constructStack } from "../utils/stack";
 
 interface MigrateCommandConfig {
   cfnPath: string;
