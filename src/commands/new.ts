@@ -12,6 +12,7 @@ import {
   newStackImports,
   newTestImports,
 } from "../utils/imports";
+import { buildDirectory } from "../utils/init";
 import { cancellablePrompts } from "../utils/prompts";
 import { constructTest } from "../utils/snapshot";
 import type { StackTemplate } from "../utils/stack";
@@ -27,6 +28,7 @@ interface NewCommandConfig {
   stackPath: string;
   stackName: Name;
   testPath: string;
+  init: boolean;
 }
 
 interface NewCommandArgs {
@@ -37,6 +39,7 @@ interface NewCommandArgs {
 
 interface NewCommandFlags {
   "multi-app": boolean;
+  init: boolean;
 }
 
 export class NewCommand extends Command {
@@ -45,7 +48,16 @@ export class NewCommand extends Command {
   static flags = {
     version: flags.version({ char: "v" }),
     help: flags.help({ char: "h" }),
-    "multi-app": flags.boolean(),
+    "multi-app": flags.boolean({
+      default: false,
+      description:
+        "create the stack files within sub directories as the project defines multiple apps",
+    }),
+    init: flags.boolean({
+      default: false,
+      description:
+        "create the cdk directory before building the app and stack files",
+    }),
   };
 
   static args = [
@@ -102,6 +114,7 @@ export class NewCommand extends Command {
       testPath: `${cdkDir}/lib/${
         flags["multi-app"] ? `${kebabAppName}/` : ""
       }${kebabStackName}.test.ts`,
+      init: flags["init"],
     };
 
     NewCommand.validateConfig(config);
@@ -110,7 +123,9 @@ export class NewCommand extends Command {
   };
 
   static validateConfig = (config: NewCommandConfig): void => {
-    checkPathExists(config.cdkDir); // TODO: Add an option to init the CDK dir at the same time?
+    if (!config.init) {
+      checkPathExists(config.cdkDir);
+    }
     checkPathDoesNotExist(config.appPath); // TODO: Update the app file if it already exists
     checkPathDoesNotExist(config.stackPath);
   };
@@ -119,6 +134,10 @@ export class NewCommand extends Command {
     this.log("Starting CDK generator");
 
     const config = NewCommand.getConfig(this.parse(NewCommand));
+
+    if (config.init) {
+      buildDirectory({ outputDir: config.cdkDir }, this);
+    }
 
     this.log(
       `New app ${config.appName.pascal} will be written to ${config.appPath}`
