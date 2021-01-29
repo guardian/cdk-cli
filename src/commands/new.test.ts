@@ -25,8 +25,14 @@ describe("The NewCommand class", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
         cdkDir: "/path/to/output",
         multiApp: false,
-        appName: "App",
-        stackName: "StackName",
+        appName: {
+          pascal: "App",
+          kebab: "app",
+        },
+        stackName: {
+          pascal: "StackName",
+          kebab: "stack-name",
+        },
       });
     });
 

@@ -1,11 +1,11 @@
 import { CodeMaker } from "codemaker";
-import kebabCase from "lodash.kebabcase";
 import type { Imports } from "./imports";
+import type { Name } from "./utils";
 
 export interface TestBuilderProps {
   imports: Imports;
-  appName: string;
-  stackName: string;
+  appName: Name;
+  stackName: Name;
   outputFile: string;
   outputDir: string;
   comment?: string;
@@ -41,14 +41,14 @@ export class TestBuilder {
   }
 
   addTest(): void {
-    this.code.openBlock(`describe("The ${this.config.stackName} stack", () =>`);
+    this.code.openBlock(
+      `describe("The ${this.config.stackName.pascal} stack", () =>`
+    );
     this.code.openBlock(`it("matches the snapshot", () =>`);
 
     this.code.line("const app = new App();");
     this.code.line(
-      `const stack = new ${this.config.stackName}(app, "${kebabCase(
-        this.config.stackName
-      )}", { app: "${kebabCase(this.config.appName)}" });`
+      `const stack = new ${this.config.stackName.pascal}(app, "${this.config.stackName.kebab}", { app: "${this.config.appName.kebab}" });`
     );
     this.code.line(
       "expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();"

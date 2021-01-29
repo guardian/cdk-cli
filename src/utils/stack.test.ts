@@ -23,7 +23,10 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: "",
+      stackName: {
+        pascal: "",
+        kebab: "",
+      },
       imports: new Imports(),
       template,
     });
@@ -94,7 +97,10 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: "",
+      stackName: {
+        kebab: "",
+        pascal: "",
+      },
       imports: new Imports(),
       template: {} as StackTemplate,
     });
@@ -153,7 +159,10 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: "",
+      stackName: {
+        kebab: "",
+        pascal: "",
+      },
       imports: new Imports(),
       template: {} as StackTemplate,
     });
@@ -177,7 +186,10 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: "",
+      stackName: {
+        kebab: "",
+        pascal: "",
+      },
       imports: new Imports(),
       template: {} as StackTemplate,
     });

@@ -26,8 +26,14 @@ describe("The MigrateCommand class", () => {
       expect(MigrateCommand.getConfig(args)).toMatchObject({
         cfnPath: "/path/to/template.ts",
         cdkDir: "/path/to/output",
-        appName: "App",
-        stackName: "StackName",
+        appName: {
+          pascal: "App",
+          kebab: "app",
+        },
+        stackName: {
+          pascal: "StackName",
+          kebab: "stack-name",
+        },
         multiApp: false,
       });
     });
@@ -65,7 +71,10 @@ describe("The MigrateCommand class", () => {
       };
 
       expect(MigrateCommand.getConfig(args)).toMatchObject({
-        stackName: "Template",
+        stackName: {
+          pascal: "Template",
+          kebab: "template",
+        },
       });
     });
   });

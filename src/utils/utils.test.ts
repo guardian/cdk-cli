@@ -1,4 +1,4 @@
-import { camelCaseObjectKeys } from "./utils";
+import { camelCaseObjectKeys, pascalCase } from "./utils";
 
 describe("The camelCaseObjectKeys function", () => {
   test("converts keys from kebab-case", () => {
@@ -35,5 +35,27 @@ describe("The camelCaseObjectKeys function", () => {
 
   test("doesn't fail for an empty object", () => {
     expect(camelCaseObjectKeys({})).toEqual({});
+  });
+});
+
+describe("The pascalCase function", () => {
+  test("leaves PascalCase as is", () => {
+    expect(pascalCase("PascalCase")).toBe("PascalCase");
+  });
+
+  test("converts snake_case", () => {
+    expect(pascalCase("snake_case")).toBe("SnakeCase");
+  });
+
+  test("converts camelCase", () => {
+    expect(pascalCase("camelCase")).toBe("CamelCase");
+  });
+
+  test("converts kebab-case", () => {
+    expect(pascalCase("kebab-case")).toBe("KebabCase");
+  });
+
+  test("converts Space Case", () => {
+    expect(pascalCase("space case")).toBe("SpaceCase");
   });
 });

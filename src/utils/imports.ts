@@ -1,5 +1,5 @@
 import type { CodeMaker } from "codemaker";
-import kebabCase from "lodash.kebabcase";
+import type { Name } from "./utils";
 
 interface Import {
   types: string[];
@@ -93,8 +93,8 @@ export const newStackImports = (): Imports => {
 };
 
 export const newAppImports = (
-  name: string,
-  app: string,
+  name: Name,
+  app: Name,
   multiApp: boolean
 ): Imports => {
   const imports = new Imports({
@@ -109,15 +109,14 @@ export const newAppImports = (
     },
   });
 
-  imports.addImport(
-    `../lib/${multiApp ? `${kebabCase(app)}/` : ""}${kebabCase(name)}`,
-    [name]
-  );
+  imports.addImport(`../lib/${multiApp ? `${app.kebab}/` : ""}${name.kebab}`, [
+    name.pascal,
+  ]);
 
   return imports;
 };
 
-export const newTestImports = (name: string): Imports => {
+export const newTestImports = (name: Name): Imports => {
   const imports = new Imports({
     "@aws-cdk/assert/jest": {
       types: [],
@@ -134,7 +133,7 @@ export const newTestImports = (name: string): Imports => {
     },
   });
 
-  imports.addImport(`./${kebabCase(name)}`, [name]);
+  imports.addImport(`./${name.kebab}`, [name.pascal]);
 
   return imports;
 };

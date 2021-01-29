@@ -264,7 +264,11 @@ describe("The newStackImports function", () => {
 
 describe("The newAppImports function", () => {
   test("adds the correct initial imports", () => {
-    const imports = newAppImports("stack", "app", false);
+    const imports = newAppImports(
+      { kebab: "stack", pascal: "Stack" },
+      { kebab: "app", pascal: "App" },
+      false
+    );
     expect(imports.imports["@aws-cdk/core"]).toEqual({
       types: [],
       components: ["App"],
@@ -278,7 +282,11 @@ describe("The newAppImports function", () => {
   });
 
   test("adds the correct stack import when not multiapp", () => {
-    const imports = newAppImports("StackName", "App", false);
+    const imports = newAppImports(
+      { pascal: "StackName", kebab: "stack-name" },
+      { pascal: "App", kebab: "app" },
+      false
+    );
     expect(imports.imports["../lib/stack-name"]).toEqual({
       types: [],
       components: ["StackName"],
@@ -286,7 +294,11 @@ describe("The newAppImports function", () => {
   });
 
   test("adds the correct stack import when multiapp", () => {
-    const imports = newAppImports("StackName", "App", true);
+    const imports = newAppImports(
+      { pascal: "StackName", kebab: "stack-name" },
+      { pascal: "App", kebab: "app" },
+      true
+    );
     expect(imports.imports["../lib/app/stack-name"]).toEqual({
       types: [],
       components: ["StackName"],
@@ -296,7 +308,7 @@ describe("The newAppImports function", () => {
 
 describe("The newTestImports function", () => {
   test("adds the correct initial imports", () => {
-    const imports = newTestImports("stack");
+    const imports = newTestImports({ kebab: "stack", pascal: "Stack" });
     expect(imports.imports["@aws-cdk/assert"]).toEqual({
       types: [],
       components: ["SynthUtils"],
@@ -315,7 +327,10 @@ describe("The newTestImports function", () => {
   });
 
   test("adds the correct stack import", () => {
-    const imports = newTestImports("StackName");
+    const imports = newTestImports({
+      pascal: "StackName",
+      kebab: "stack-name",
+    });
     expect(imports.imports["./stack-name"]).toEqual({
       types: [],
       components: ["StackName"],

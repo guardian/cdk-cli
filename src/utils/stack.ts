@@ -1,6 +1,7 @@
 import type { CfnParameterProps } from "@aws-cdk/core";
 import { CodeMaker, toCamelCase } from "codemaker";
 import type { Imports } from "./imports";
+import type { Name } from "./utils";
 
 interface CdkParameterProps extends CfnParameterProps {
   parameterType: string;
@@ -14,7 +15,7 @@ export interface StackTemplate {
 interface StackBuilderProps {
   imports: Imports;
   template: StackTemplate;
-  stackName: string;
+  stackName: Name;
   outputFile: string;
   outputDir: string;
   comment?: string;
@@ -46,7 +47,7 @@ export class StackBuilder {
     this.config.imports.render(this.code);
 
     this.code.openBlock(
-      `export class ${this.config.stackName} extends GuStack`
+      `export class ${this.config.stackName.pascal} extends GuStack`
     );
     this.code.openBlock(
       `constructor(scope: App, id: string, props: GuStackProps)`

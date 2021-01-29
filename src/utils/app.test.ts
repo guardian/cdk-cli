@@ -7,8 +7,11 @@ describe("The AppBuilder class", () => {
     const codemaker = new MockCodeMaker();
     const args = {
       imports: new Imports(),
-      appName: "App",
-      stacks: [{ name: "Stack" }],
+      appName: {
+        pascal: "App",
+        kebab: "app",
+      },
+      stacks: [{ name: { pascal: "Stack", kebab: "stack" } }],
       outputFile: "output",
       outputDir: "./cdk",
     };
