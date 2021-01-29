@@ -1,8 +1,9 @@
 import { readFileSync } from "fs";
 import { toCamelCase } from "codemaker";
 import { DEFAULT_SCHEMA, load, Type } from "js-yaml";
-import type { CDKTemplate } from "./cdk";
-import { Imports } from "./imports";
+import type { Imports } from "./imports";
+import { newStackImports } from "./imports";
+import type { StackTemplate } from "./stack";
 import { camelCaseObjectKeys } from "./utils";
 
 export interface CFNTemplate {
@@ -30,11 +31,11 @@ export class CfnParser {
 
   // TODO: Make this its own class so that we can do addParameter?
   //       Then the builder would be part of that?
-  template: CDKTemplate = {
+  template: StackTemplate = {
     Parameters: {},
   };
 
-  imports: Imports = new Imports();
+  imports: Imports = newStackImports();
 
   // TODO: Do this a better way
   paramComponents = [
@@ -105,7 +106,7 @@ export class CfnParser {
 
 export const parse = (
   cfnPath: string
-): { imports: Imports; template: CDKTemplate } => {
+): { imports: Imports; template: StackTemplate } => {
   const parser = new CfnParser(cfnPath);
   parser.parse();
   return {

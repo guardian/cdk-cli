@@ -17,6 +17,12 @@ export const checkPathExists = (path: string): void => {
   }
 };
 
+export const checkPathDoesNotExist = (path: string): void => {
+  if (existsSync(path)) {
+    throw new Error(`There is already a file at - ${path}`);
+  }
+};
+
 export const checkDirectoryIsEmpty = (path: string): void => {
   if (existsSync(path) && readdirSync(path).length > 0) {
     throw new Error(`Directory ${path} is not empty`);

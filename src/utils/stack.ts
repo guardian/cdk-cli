@@ -7,30 +7,30 @@ interface CdkParameterProps extends CfnParameterProps {
   comment?: string;
 }
 
-export interface CDKTemplate {
+export interface StackTemplate {
   Parameters: Record<string, CdkParameterProps>;
 }
 
-interface CDKBuilderProps {
+interface StackBuilderProps {
   imports: Imports;
-  template: CDKTemplate;
+  template: StackTemplate;
   stackName: string;
   outputFile: string;
   outputDir: string;
   comment?: string;
 }
 
-export class CdkBuilder {
-  config;
+export class StackBuilder {
+  config: StackBuilderProps;
   imports: Imports;
-  template: CDKTemplate;
+  template: StackTemplate;
 
   code: CodeMaker;
 
-  constructor({ imports, template, ...config }: CDKBuilderProps) {
-    this.config = config;
-    this.imports = imports;
-    this.template = template;
+  constructor(props: StackBuilderProps) {
+    this.config = props;
+    this.imports = props.imports;
+    this.template = props.template;
 
     this.code = new CodeMaker({ indentationLevel: 2 });
     this.code.closeBlockFormatter = (s?: string): string => s ?? "}";
@@ -38,15 +38,18 @@ export class CdkBuilder {
 
   async constructCdkFile(): Promise<void> {
     this.code.openFile(this.config.outputFile);
-    this.config.comment && this.code.line(this.config.comment);
+    if (this.config.comment) {
+      this.code.line(this.config.comment);
+      this.code.line();
+    }
 
-    this.addImports();
+    this.config.imports.render(this.code);
 
     this.code.openBlock(
       `export class ${this.config.stackName} extends GuStack`
     );
     this.code.openBlock(
-      `constructor(scope: App, id: string, props?: StackProps)`
+      `constructor(scope: App, id: string, props: GuStackProps)`
     );
     this.code.line("super(scope, id, props);");
 
@@ -57,27 +60,6 @@ export class CdkBuilder {
 
     this.code.closeFile(this.config.outputFile);
     await this.code.save(this.config.outputDir);
-  }
-
-  addImports(): void {
-    // TODO: Remove this line and add a new line at the end of the optional comment
-    this.code.line();
-    Object.keys(this.imports.imports)
-      .sort()
-      .forEach((lib) => {
-        const imports = this.imports.imports[lib];
-
-        imports.types.length &&
-          this.code.line(
-            `import type { ${imports.types.sort().join(", ")} } from "${lib}";`
-          );
-
-        imports.components.length &&
-          this.code.line(
-            `import { ${imports.components.sort().join(", ")} } from "${lib}";`
-          );
-      });
-    this.code.line();
   }
 
   addParams(): void {
@@ -157,7 +139,9 @@ export class CdkBuilder {
   }
 }
 
-export const construct = async (props: CDKBuilderProps): Promise<void> => {
-  const builder = new CdkBuilder(props);
+export const constructStack = async (
+  props: StackBuilderProps
+): Promise<void> => {
+  const builder = new StackBuilder(props);
   await builder.constructCdkFile();
 };

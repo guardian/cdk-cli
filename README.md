@@ -10,16 +10,14 @@ CDK CLI is a tool to make it easier to get started with [CDK](https://github.com
 [![License](https://img.shields.io/npm/l/cdk-cli.svg)](https://github.com/guardian/cdk-cli/blob/master/package.json)
 
 <!-- toc -->
-
-- [CDK CLI](#cdk-cli)
-- [Usage](#usage)
-- [Commands](#commands)
+* [CDK CLI](#cdk-cli)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @guardian/cdk-cli
 $ cdk-cli COMMAND
@@ -31,17 +29,15 @@ USAGE
   $ cdk-cli COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`cdk-cli help [COMMAND]`](#cdk-cli-help-command)
-- [`cdk-cli init [OUTPUT]`](#cdk-cli-init-output)
-- [`cdk-cli migrate TEMPLATE OUTPUT [STACK]`](#cdk-cli-migrate-template-output-stack)
-- [`cdk-cli new OUTPUT [STACK]`](#cdk-cli-new-output-stack)
+* [`cdk-cli help [COMMAND]`](#cdk-cli-help-command)
+* [`cdk-cli init [OUTPUT]`](#cdk-cli-init-output)
+* [`cdk-cli migrate TEMPLATE OUTPUT APP [STACK]`](#cdk-cli-migrate-template-output-app-stack)
+* [`cdk-cli new OUTPUT APP STACK`](#cdk-cli-new-output-app-stack)
 
 ## `cdk-cli help [COMMAND]`
 
@@ -78,45 +74,48 @@ OPTIONS
 
 _See code: [src/commands/init.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/init.ts)_
 
-## `cdk-cli migrate TEMPLATE OUTPUT [STACK]`
+## `cdk-cli migrate TEMPLATE OUTPUT APP [STACK]`
 
 Migrates from a cloudformation template to Guardian flavoured CDK
 
 ```
 USAGE
-  $ cdk-cli migrate TEMPLATE OUTPUT [STACK]
+  $ cdk-cli migrate TEMPLATE OUTPUT APP [STACK]
 
 ARGUMENTS
   TEMPLATE  The template file to migrate
-  OUTPUT    The file to output CDK to
+  OUTPUT    The CDK directory to migrate the stack to
+  APP       The name of the app that the stack belongs to
   STACK     A name to give the stack. Defaults to match the filename.
 
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
+  --multi-app
 ```
 
 _See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/migrate.ts)_
 
-## `cdk-cli new OUTPUT [STACK]`
+## `cdk-cli new OUTPUT APP STACK`
 
 Creates a new CDK stack
 
 ```
 USAGE
-  $ cdk-cli new OUTPUT [STACK]
+  $ cdk-cli new OUTPUT APP STACK
 
 ARGUMENTS
-  OUTPUT  The file to output CDK to
-  STACK   A name to give the stack. Defaults to match the filename.
+  OUTPUT  The CDK directory to create the new files in
+  APP     A name to give the app
+  STACK   A name to give the stack
 
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
+  --multi-app
 ```
 
 _See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/new.ts)_
-
 <!-- commandsstop -->
 
 ## Development
