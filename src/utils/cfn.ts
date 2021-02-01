@@ -7,7 +7,10 @@ import type { StackTemplate } from "./stack";
 import { camelCaseObjectKeys } from "./utils";
 
 export interface CFNTemplate {
-  Parameters: Record<string, Record<string, unknown>>;
+  Parameters?: Record<string, Record<string, unknown>>;
+  Outputs?: Record<string, Record<string, unknown>>;
+  Resources?: Record<string, Record<string, unknown>>;
+  Mappings?: Record<string, Record<string, unknown>>;
 }
 
 // TODO: Allow for all CDK tags
@@ -37,6 +40,8 @@ export class CfnParser {
 
   imports: Imports = newStackImports();
 
+  cfn: CFNTemplate = {};
+
   // TODO: Do this a better way
   paramComponents = [
     {
@@ -54,9 +59,9 @@ export class CfnParser {
       const f = readFileSync(this.cfnPath, "utf8");
 
       // TODO: Handle json files too
-      const cfn = load(f, { schema: CDK_SCHEMA }) as CFNTemplate;
+      this.cfn = load(f, { schema: CDK_SCHEMA }) as CFNTemplate;
 
-      this.parseParameters(cfn);
+      this.parseParameters(this.cfn);
     } catch (e) {
       let msg = "Unknown Error";
       if (e instanceof Error) {
@@ -67,8 +72,12 @@ export class CfnParser {
   };
 
   parseParameters = (cfn: CFNTemplate): void => {
-    Object.keys(cfn.Parameters).forEach((key) => {
-      const parameters = camelCaseObjectKeys(cfn.Parameters[key]);
+    if (!cfn.Parameters) return;
+
+    const p = cfn.Parameters;
+
+    Object.keys(p).forEach((key) => {
+      const parameters = camelCaseObjectKeys(p[key]);
 
       const similarConstuct = this.getSimilarConstructs(key);
       if (similarConstuct) {
@@ -106,11 +115,12 @@ export class CfnParser {
 
 export const parse = (
   cfnPath: string
-): { imports: Imports; template: StackTemplate } => {
+): { imports: Imports; template: StackTemplate; cfn: CFNTemplate } => {
   const parser = new CfnParser(cfnPath);
   parser.parse();
   return {
     imports: parser.imports,
     template: parser.template,
+    cfn: parser.cfn,
   };
 };

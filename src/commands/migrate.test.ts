@@ -37,7 +37,6 @@ describe("The MigrateCommand class", () => {
         cfnFile: "template.ts",
         appPath: `/path/to/output/bin/app.ts`,
         stackPath: `/path/to/output/lib/stack-name.ts`,
-        testPath: `/path/to/output/lib/stack-name.test.ts`,
       });
     });
 
@@ -48,7 +47,6 @@ describe("The MigrateCommand class", () => {
         cfnFile: "template.ts",
         appPath: `/path/to/output/bin/app.ts`,
         stackPath: `/path/to/output/lib/app/stack-name.ts`,
-        testPath: `/path/to/output/lib/app/stack-name.test.ts`,
       });
     });
 
