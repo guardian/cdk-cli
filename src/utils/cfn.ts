@@ -1,30 +1,15 @@
 import { readFileSync } from "fs";
 import { toCamelCase } from "codemaker";
-import { DEFAULT_SCHEMA, load, Type } from "js-yaml";
+import { load } from "js-yaml";
 import type { Imports } from "./imports";
 import { newStackImports } from "./imports";
+import { schema } from "./schema";
 import type { StackTemplate } from "./stack";
 import { camelCaseObjectKeys } from "./utils";
 
 export interface CFNTemplate {
   Parameters: Record<string, Record<string, unknown>>;
 }
-
-// TODO: Allow for all CDK tags
-const CDK_SCHEMA = DEFAULT_SCHEMA.extend([
-  new Type("!Ref", {
-    kind: "scalar",
-    construct: (data: string) => ({ Ref: data }),
-  }),
-  new Type("!Sub", {
-    kind: "scalar",
-    construct: (data: string) => ({ "Fn::Sub": data }),
-  }),
-  new Type("!GetAZs", {
-    kind: "scalar",
-    construct: (data: unknown) => ({ "Fn::GetAZs": data }),
-  }),
-]);
 
 export class CfnParser {
   cfnPath: string;
@@ -54,7 +39,7 @@ export class CfnParser {
       const f = readFileSync(this.cfnPath, "utf8");
 
       // TODO: Handle json files too
-      const cfn = load(f, { schema: CDK_SCHEMA }) as CFNTemplate;
+      const cfn = load(f, { schema }) as CFNTemplate;
 
       this.parseParameters(cfn);
     } catch (e) {
