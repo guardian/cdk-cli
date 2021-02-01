@@ -18,6 +18,7 @@ interface AppBuilderProps {
   outputFile: string;
   outputDir: string;
   comment?: string;
+  migrated?: boolean;
 }
 
 export class AppBuilder {
@@ -47,7 +48,9 @@ export class AppBuilder {
       this.code.line(
         `new ${stack.name}(app, "${stack.name}", { app: "${kebabCase(
           this.config.appName
-        )}" });`
+        )}"${
+          this.config.migrated ? ", migratedFromCloudFormation: true" : ""
+        } });`
       );
     });
 
