@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - shell: bash --login {0}
-        run: ./script/lint
+        run: nvm install && nvm use && ./script/lint
   test:
     runs-on: ubuntu-latest
     strategy:
