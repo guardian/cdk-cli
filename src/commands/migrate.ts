@@ -11,6 +11,8 @@ import { parse } from "../utils/cfn";
 import { newAppImports, newTestImports } from "../utils/imports";
 import { constructTest } from "../utils/snapshot";
 import { constructStack } from "../utils/stack";
+import type { Name } from "../utils/utils";
+import { pascalCase } from "../utils/utils";
 
 interface MigrateCommandConfig {
   cfnPath: string;
@@ -18,9 +20,9 @@ interface MigrateCommandConfig {
   cdkDir: string;
   multiApp: boolean;
   appPath: string;
-  appName: string;
+  appName: Name;
   stackPath: string;
-  stackName: string;
+  stackName: Name;
   testPath: string;
 }
 
@@ -77,9 +79,11 @@ export class MigrateCommand extends Command {
   }): MigrateCommandConfig => {
     const cfnFile = basename(args.template);
     const cdkDir = args.output;
-    const appName = args.app;
+    const appName = pascalCase(args.app);
     const kebabAppName = kebabCase(appName);
-    const stackName = args.stack ?? getStackNameFromFileName(cfnFile);
+    const stackName = args.stack
+      ? pascalCase(args.stack)
+      : getStackNameFromFileName(cfnFile);
     const kebabStackName = kebabCase(stackName);
 
     const config = {
@@ -87,9 +91,15 @@ export class MigrateCommand extends Command {
       cfnFile,
       cdkDir,
       multiApp: flags["multi-app"],
-      appName,
+      appName: {
+        kebab: kebabAppName,
+        pascal: appName,
+      },
       appPath: `${cdkDir}/bin/${kebabAppName}.ts`,
-      stackName,
+      stackName: {
+        kebab: kebabStackName,
+        pascal: stackName,
+      },
       stackPath: `${cdkDir}/lib/${
         flags["multi-app"] ? `${kebabAppName}/` : ""
       }${kebabStackName}.ts`,
@@ -117,9 +127,11 @@ export class MigrateCommand extends Command {
     const config = MigrateCommand.getConfig(this.parse(MigrateCommand));
 
     this.log(`Converting template found at ${config.cfnPath}`);
-    this.log(`New app ${config.appName} will be written to ${config.appPath}`);
     this.log(
-      `New stack ${config.stackName} will be written to ${config.stackPath}`
+      `New app ${config.appName.pascal} will be written to ${config.appPath}`
+    );
+    this.log(
+      `New stack ${config.stackName.pascal} will be written to ${config.stackPath}`
     );
 
     await constructApp({

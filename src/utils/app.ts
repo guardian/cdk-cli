@@ -1,9 +1,9 @@
 import { CodeMaker } from "codemaker";
-import kebabCase from "lodash.kebabcase";
 import type { Imports } from "./imports";
+import type { Name } from "./utils";
 
 export interface StackProps {
-  name: string;
+  name: Name;
 }
 
 export interface AppTemplate {
@@ -13,7 +13,7 @@ export interface AppTemplate {
 
 interface AppBuilderProps {
   imports: Imports;
-  appName: string;
+  appName: Name;
   stacks: StackProps[];
   outputFile: string;
   outputDir: string;
@@ -46,9 +46,9 @@ export class AppBuilder {
 
     this.config.stacks.forEach((stack) => {
       this.code.line(
-        `new ${stack.name}(app, "${stack.name}", { app: "${kebabCase(
-          this.config.appName
-        )}"${
+        `new ${stack.name.pascal}(app, "${stack.name.pascal}", { app: "${
+          this.config.appName.kebab
+        }"${
           this.config.migrated ? ", migratedFromCloudFormation: true" : ""
         } });`
       );

@@ -7,8 +7,14 @@ describe("The TestBuilder class", () => {
     const builder = new TestBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: "StackName",
-      appName: "AppName",
+      stackName: {
+        pascal: "StackName",
+        kebab: "stack-name",
+      },
+      appName: {
+        pascal: "AppName",
+        kebab: "app-name",
+      },
       imports: new Imports(),
     });
     const codemaker = new MockCodeMaker();
