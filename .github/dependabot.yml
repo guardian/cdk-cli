@@ -14,9 +14,19 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore(deps): "
+    # The version of @aws-cdk/* libraries must match those from @guardian/cdk.
+    # We'd never be able to update them here independently, so just ignore them.
+    ignore:
+      - dependency-name: "@aws-cdk"
+      - dependency-name: "@aws-cdk/*"
   - package-ecosystem: "npm"
     directory: "/src/template"
     schedule:
       interval: "weekly"
     commit-message:
       prefix: "chore(deps): "
+    # The version of @aws-cdk/* libraries must match those from @guardian/cdk.
+    # We'd never be able to update them here independently, so just ignore them.
+    ignore:
+      - dependency-name: "@aws-cdk"
+      - dependency-name: "@aws-cdk/*"
