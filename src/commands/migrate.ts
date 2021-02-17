@@ -9,6 +9,7 @@ import {
 } from "../utils/args";
 import { parse } from "../utils/cfn";
 import { newAppImports, newTestImports } from "../utils/imports";
+import { buildDirectory } from "../utils/init";
 import { constructTest } from "../utils/snapshot";
 import { constructStack } from "../utils/stack";
 import type { Name } from "../utils/utils";
@@ -24,6 +25,7 @@ interface MigrateCommandConfig {
   stackPath: string;
   stackName: Name;
   testPath: string;
+  init: boolean;
 }
 
 interface MigrateCommandArgs {
@@ -35,6 +37,7 @@ interface MigrateCommandArgs {
 
 interface MigrateCommandFlags {
   "multi-app": boolean;
+  init: boolean;
 }
 
 export class MigrateCommand extends Command {
@@ -44,7 +47,16 @@ export class MigrateCommand extends Command {
   static flags = {
     version: flags.version({ char: "v" }),
     help: flags.help({ char: "h" }),
-    "multi-app": flags.boolean(),
+    "multi-app": flags.boolean({
+      default: false,
+      description:
+        "create the stack files within sub directories as the project defines multiple apps",
+    }),
+    init: flags.boolean({
+      default: false,
+      description:
+        "create the cdk directory before building the app and stack files",
+    }),
   };
 
   static args = [
@@ -106,6 +118,7 @@ export class MigrateCommand extends Command {
       testPath: `${cdkDir}/lib/${
         flags["multi-app"] ? `${kebabAppName}/` : ""
       }${kebabStackName}.test.ts`,
+      init: flags["init"],
     };
 
     MigrateCommand.validateConfig(config);
@@ -116,7 +129,9 @@ export class MigrateCommand extends Command {
   static validateConfig = (config: MigrateCommandConfig): void => {
     // TODO: Do some better validation here to make sure that files and directories are what we expect them to be.
     checkPathExists(config.cfnPath);
-    checkPathExists(config.cdkDir); // TODO: Add an option to init the CDK dir at the same time?
+    if (!config.init) {
+      checkPathExists(config.cdkDir);
+    }
     checkPathDoesNotExist(config.appPath); // TODO: Update the app file if it already exists
     checkPathDoesNotExist(config.stackPath);
   };
@@ -125,6 +140,11 @@ export class MigrateCommand extends Command {
     this.log("Starting CDK generator");
 
     const config = MigrateCommand.getConfig(this.parse(MigrateCommand));
+
+    if (config.init) {
+      this.log("Creating CDK directory");
+      buildDirectory({ outputDir: config.cdkDir }, this);
+    }
 
     this.log(`Converting template found at ${config.cfnPath}`);
     this.log(

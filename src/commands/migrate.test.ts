@@ -19,6 +19,7 @@ describe("The MigrateCommand class", () => {
       },
       flags: {
         "multi-app": false,
+        init: false,
       },
     };
 
@@ -49,7 +50,10 @@ describe("The MigrateCommand class", () => {
 
     test("pulls outs computed values correctly if multiApp is true", () => {
       expect(
-        MigrateCommand.getConfig({ ...args, flags: { "multi-app": true } })
+        MigrateCommand.getConfig({
+          ...args,
+          flags: { "multi-app": true, init: false },
+        })
       ).toMatchObject({
         cfnFile: "template.ts",
         appPath: `/path/to/output/bin/app.ts`,
@@ -67,6 +71,7 @@ describe("The MigrateCommand class", () => {
         },
         flags: {
           "multi-app": false,
+          init: false,
         },
       };
 

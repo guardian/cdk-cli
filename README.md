@@ -91,7 +91,8 @@ ARGUMENTS
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
-  --multi-app
+  --init         create the cdk directory before building the app and stack files
+  --multi-app    create the stack files within sub directories as the project defines multiple apps
 ```
 
 _See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/migrate.ts)_
@@ -112,7 +113,8 @@ ARGUMENTS
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
-  --multi-app
+  --init         create the cdk directory before building the app and stack files
+  --multi-app    create the stack files within sub directories as the project defines multiple apps
 ```
 
 _See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/new.ts)_
