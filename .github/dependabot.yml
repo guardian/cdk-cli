@@ -11,7 +11,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      # This repository is currently fairly inactive and not being used in the wild. Run Dependabot once a month to reduce the frequency of PRs
+      interval: "monthly"
     commit-message:
       prefix: "chore(deps): "
     # The version of @aws-cdk/* libraries must match those from @guardian/cdk.
@@ -22,7 +23,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/src/template"
     schedule:
-      interval: "weekly"
+      # This repository is currently fairly inactive and not being used in the wild. Run Dependabot once a month to reduce the frequency of PRs
+      interval: "monthly"
     commit-message:
       prefix: "chore(deps): "
     # The version of @aws-cdk/* libraries must match those from @guardian/cdk.
