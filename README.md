@@ -1,7 +1,5 @@
 # CDK CLI
 
-CDK CLI is a tool to make it easier to get started with [CDK](https://github.com/aws/aws-cdk) using the [@guardian/cdk](https://github.com/guardian/cdk) library.
-
 **This project is still in the early stages of development and may not be stable**
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
@@ -14,6 +12,25 @@ CDK CLI is a tool to make it easier to get started with [CDK](https://github.com
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
+
+CDK CLI is a tool to make it easier to get started with [CDK](https://github.com/aws/aws-cdk) using the [@guardian/cdk](https://github.com/guardian/cdk) library.
+
+## Deprecation Notice
+
+We plan to deprecate this CLI and migrate all useful features to the [main Guardian CDK repository](https://github.com/guardian/cdk).
+As a short-term fix for those looking to get a GuCDK stack up and running, here are some manual steps, expectations and notes regarding the process:
+
+### Manual Setup Steps/Expectations
+
+* Ensure your repository has a git remote set (eg `git remote add`) to avoid [`repository_url` errors](https://github.com/guardian/cdk/blob/eed6bfab79d62406b7ee08eee56eddbdf41d6987/src/constructs/core/stack.ts#L149)
+* After generating your scaffolding with `cdk-cli new --init [...args]`, navigate to `/bin/<APP>.ts` and add the stack name to the app declaration
+
+### Improvements / TODO
+
+* The `new` command asks for an `APP` and a `STACK`, which corresponds to the `/bin/` filename and the name of the class declared in `/lib`.
+  I think it would be better if the `APP` arg resulted in the name of the app in `/lib`, as, at least for the Guardian, the stack name means both "what stack does this belong to" and "what Cloudformation stack is this",
+  with the latter being more synonymous with the app name.
+
 
 # Usage
 

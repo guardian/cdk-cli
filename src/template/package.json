@@ -13,13 +13,13 @@
     "lint": "eslint lib/** bin/** --ext .ts --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.90.0",
+    "@aws-cdk/assert": "1.115.0",
     "@guardian/eslint-config-typescript": "^0.5.0",
     "@types/jest": "^26.0.20",
     "@types/node": "14.14.37",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
-    "aws-cdk": "1.90.0",
+    "aws-cdk": "1.115.0",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
@@ -32,13 +32,13 @@
     "typescript": "~4.2.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-ec2": "1.90.0",
-    "@aws-cdk/aws-events-targets": "1.90.0",
-    "@aws-cdk/aws-iam": "1.90.0",
-    "@aws-cdk/aws-lambda": "1.90.0",
-    "@aws-cdk/aws-s3": "1.90.0",
-    "@aws-cdk/core": "1.90.0",
-    "@guardian/cdk": "0.40.0",
+    "@aws-cdk/aws-ec2": "1.115.0",
+    "@aws-cdk/aws-events-targets": "1.115.0",
+    "@aws-cdk/aws-iam": "1.115.0",
+    "@aws-cdk/aws-lambda": "1.115.0",
+    "@aws-cdk/aws-s3": "1.115.0",
+    "@aws-cdk/core": "1.115.0",
+    "@guardian/cdk": "23.5.0",
     "source-map-support": "^0.5.16"
   }
 }

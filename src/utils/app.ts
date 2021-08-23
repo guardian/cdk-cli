@@ -45,10 +45,10 @@ export class AppBuilder {
     this.code.line("const app = new App();");
 
     this.config.stacks.forEach((stack) => {
+      this.code.line(`//  TODO: Add stack name
+//   e.g. { stack: "SomeStack" }`);
       this.code.line(
-        `new ${stack.name.pascal}(app, "${stack.name.pascal}", { app: "${
-          this.config.appName.kebab
-        }"${
+        `new ${stack.name.pascal}(app, "${stack.name.pascal}", {${
           this.config.migrated ? ", migratedFromCloudFormation: true" : ""
         } });`
       );
