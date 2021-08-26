@@ -57,8 +57,8 @@ describe("The AppBuilder class", () => {
         `const app = new App();`
       );
       expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
-        5,
-        `new Stack(app, "Stack", { app: "app" });`
+        6,
+        `new Stack(app, "Stack", { });`
       );
     });
   });
