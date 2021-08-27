@@ -40,7 +40,7 @@ $ npm install -g @guardian/cdk-cli
 $ cdk-cli COMMAND
 running command...
 $ cdk-cli (-v|--version|version)
-@guardian/cdk-cli/0.0.0 darwin-x64 node-v14.15.1
+@guardian/cdk-cli/0.0.1 darwin-x64 node-v14.16.1
 $ cdk-cli --help [COMMAND]
 USAGE
   $ cdk-cli COMMAND
@@ -71,7 +71,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
 ## `cdk-cli init [OUTPUT]`
 
@@ -89,7 +89,7 @@ OPTIONS
   -v, --version  show CLI version
 ```
 
-_See code: [src/commands/init.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/init.ts)_
+_See code: [src/commands/init.ts](https://github.com/guardian/cdk-cli/blob/v0.0.1/src/commands/init.ts)_
 
 ## `cdk-cli migrate TEMPLATE OUTPUT APP [STACK]`
 
@@ -112,7 +112,7 @@ OPTIONS
   --multi-app    create the stack files within sub directories as the project defines multiple apps
 ```
 
-_See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/migrate.ts)_
+_See code: [src/commands/migrate.ts](https://github.com/guardian/cdk-cli/blob/v0.0.1/src/commands/migrate.ts)_
 
 ## `cdk-cli new OUTPUT APP STACK`
 
@@ -134,7 +134,7 @@ OPTIONS
   --multi-app    create the stack files within sub directories as the project defines multiple apps
 ```
 
-_See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v0.0.0/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v0.0.1/src/commands/new.ts)_
 <!-- commandsstop -->
 
 ## Development
