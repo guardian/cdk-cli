@@ -1,7 +1,7 @@
 {
   "name": "@guardian/cdk-cli",
   "description": "A CLI tool to migrate from cloudformation to Guardian flavoured CDK",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "The Guardian",
   "bin": {
     "cdk-cli": "./bin/run"
