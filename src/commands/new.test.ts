@@ -7,7 +7,7 @@ describe("The NewCommand class", () => {
     });
 
     afterAll(() => {
-      ((NewCommand.validateConfig as unknown) as jest.Mock).mockRestore();
+      (NewCommand.validateConfig as unknown as jest.Mock).mockRestore();
     });
 
     const args = {

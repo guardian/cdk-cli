@@ -7,7 +7,7 @@ describe("The MigrateCommand class", () => {
     });
 
     afterAll(() => {
-      ((MigrateCommand.validateConfig as unknown) as jest.Mock).mockRestore();
+      (MigrateCommand.validateConfig as unknown as jest.Mock).mockRestore();
     });
 
     const args = {
