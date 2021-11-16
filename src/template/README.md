@@ -13,7 +13,6 @@ find useful scripts within the [`script`](./script) directory for common tasks.
 - `./script/test` to lint, run tests and generate templates of the CDK stacks
 - `./script/build` to compile TypeScript to JS and generate templates of the CDK stacks
 - `./script/diff` to print the diff between a CDK stack and a running CloudFormation stack
-- `./script/generate` to build a CDK stack into the `cdk.out` directory
 
 There are also some other commands defined in `package.json`, including:
 
