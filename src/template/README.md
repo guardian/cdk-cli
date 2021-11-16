@@ -12,6 +12,7 @@ find useful scripts within the [`script`](./script) directory for common tasks.
 - `./script/lint` to lint the code using ESLint
 - `./script/test` to lint, run tests and generate templates of the CDK stacks
 - `./script/diff` to print the diff between a CDK stack and a running CloudFormation stack
+- `./script/ci` to run tests and synthesise the CDK template in CI
 
 There are also some other commands defined in `package.json`, including:
 
