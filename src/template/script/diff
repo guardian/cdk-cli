@@ -2,21 +2,58 @@
 
 set -e
 
-APP=$1
-STACK=$2
-TEMPLATE_PATH=$3
+printHelp() {
+>&2 cat << EOF
+  Usage: ${0} -s AWS stack name -p AWS profile
 
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-ROOT_DIR="${DIR}/.."
-OUTPUT_DIR="${ROOT_DIR}/cdk.out"
+  Compare a CDK template with a running CloudFormation stack.
+    -s AWS stack name   Name of a deployed AWS CloudFormation stack.
+    -p AWS profile      AWS profile to use.
+    -h                  Displays this help message.
+EOF
+exit 1
+}
 
+checkCredentials() {
+  STATUS=$(aws sts get-caller-identity --profile ${PROFILE} 2>&1 || true)
 
-if [[ -z $APP ]]; then
-  echo -e "\033[31mPass the app you'd like to generate a diff"
-  echo -e "$0 <app> <stack> <template>\033[0m"
-  exit 1
+  if [[ ${STATUS} =~ (ExpiredToken) ]]; then
+    echo "Credentials for profile '${PROFILE}' have expired. Fetch new credentials."
+    exit 1
+  elif [[ ${STATUS} =~ ("could not be found") ]]; then
+    echo "Credentials for profile '${PROFILE}' are missing. Fetch credentials."
+    exit 1
+  fi
+}
+
+while getopts s:p:h FLAG; do
+  case $FLAG in
+    s)
+      STACK_NAME=$OPTARG
+      ;;
+    p)
+      PROFILE=$OPTARG
+      ;;
+    h)
+      printHelp
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${STACK_NAME}" ]; then
+  echo "stack name is missing"
+  printHelp
 fi
 
-pushd "${ROOT_DIR}" > /dev/null || exit
-yarn cdk diff --app="ts-node ${ROOT_DIR}/bin/${APP}.ts" --template="${TEMPLATE_PATH}" --path-metadata false --version-reporting false "${STACK}"
-popd > /dev/null
+if [ -z "${PROFILE}" ]; then
+  echo "profile is missing"
+  printHelp
+fi
+
+checkCredentials
+
+export GU_CDK_STACK_NAME=${STACK_NAME}
+export AWS_PROFILE=${PROFILE}
+
+yarn diff
