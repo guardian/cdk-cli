@@ -9,6 +9,9 @@
 
 <!-- toc -->
 * [CDK CLI](#cdk-cli)
+* [This expects that the `/path/to/my/application/cdk` directory exists](#this-expects-that-the-pathtomyapplicationcdk-directory-exists)
+* [If it doesn't, create it first](#if-it-doesnt-create-it-first)
+* [result!](#result)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -56,7 +59,7 @@ $ npm install -g @guardian/cdk-cli
 $ cdk-cli COMMAND
 running command...
 $ cdk-cli (-v|--version|version)
-@guardian/cdk-cli/0.0.1 darwin-x64 node-v14.16.1
+@guardian/cdk-cli/0.0.1 darwin-x64 node-v14.18.0
 $ cdk-cli --help [COMMAND]
 USAGE
   $ cdk-cli COMMAND
@@ -68,7 +71,7 @@ USAGE
 
 <!-- commands -->
 * [`cdk-cli help [COMMAND]`](#cdk-cli-help-command)
-* [`cdk-cli init [OUTPUT]`](#cdk-cli-init-output)
+* [`cdk-cli init`](#cdk-cli-init)
 * [`cdk-cli migrate TEMPLATE OUTPUT APP [STACK]`](#cdk-cli-migrate-template-output-app-stack)
 * [`cdk-cli new OUTPUT APP STACK`](#cdk-cli-new-output-app-stack)
 
@@ -87,22 +90,20 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.4/src/commands/help.ts)_
 
-## `cdk-cli init [OUTPUT]`
+## `cdk-cli init`
 
 Creates a new directory containing boilerplate configuration
 
 ```
 USAGE
-  $ cdk-cli init [OUTPUT]
-
-ARGUMENTS
-  OUTPUT  [default: ./cdk] The path of the new directory to create. Defaults to ./cdk
+  $ cdk-cli init
 
 OPTIONS
-  -h, --help     show CLI help
-  -v, --version  show CLI version
+  -h, --help       show CLI help
+  -v, --version    show CLI version
+  --output=output  (required) The path of the new directory to create.
 ```
 
 _See code: [src/commands/init.ts](https://github.com/guardian/cdk-cli/blob/v0.0.1/src/commands/init.ts)_
