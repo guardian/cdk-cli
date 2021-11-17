@@ -28,7 +28,7 @@ describe("The TestBuilder class", () => {
       builder.addTest();
       expect(codemaker._codemaker.openBlock).toHaveBeenNthCalledWith(
         1,
-        `describe("The StackName stack", () =>`
+        `describe("The AppName stack", () =>`
       );
       expect(codemaker._codemaker.openBlock).toHaveBeenNthCalledWith(
         2,
@@ -40,7 +40,7 @@ describe("The TestBuilder class", () => {
       );
       expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         2,
-        `const stack = new StackName(app, "stack-name", { app: "app-name" });`
+        `const stack = new AppName(app, "AppName", { stack: "stack-name" });`
       );
       expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
         3,

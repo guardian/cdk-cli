@@ -92,11 +92,7 @@ export const newStackImports = (): Imports => {
   });
 };
 
-export const newAppImports = (
-  name: Name,
-  app: Name,
-  multiApp: boolean
-): Imports => {
+export const newAppImports = (app: Name, multiApp: boolean): Imports => {
   const imports = new Imports({
     "@aws-cdk/core": {
       types: [],
@@ -109,14 +105,14 @@ export const newAppImports = (
     },
   });
 
-  imports.addImport(`../lib/${multiApp ? `${app.kebab}/` : ""}${name.kebab}`, [
-    name.pascal,
+  imports.addImport(`../lib/${multiApp ? `${app.kebab}/` : ""}${app.kebab}`, [
+    app.pascal,
   ]);
 
   return imports;
 };
 
-export const newTestImports = (name: Name): Imports => {
+export const newTestImports = (appName: Name): Imports => {
   const imports = new Imports({
     "@aws-cdk/assert/jest": {
       types: [],
@@ -133,7 +129,7 @@ export const newTestImports = (name: Name): Imports => {
     },
   });
 
-  imports.addImport(`./${name.kebab}`, [name.pascal]);
+  imports.addImport(`./${appName.kebab}`, [appName.pascal]);
 
   return imports;
 };

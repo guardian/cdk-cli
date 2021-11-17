@@ -11,7 +11,7 @@ describe("The AppBuilder class", () => {
         pascal: "App",
         kebab: "app",
       },
-      stacks: [{ name: { pascal: "Stack", kebab: "stack" } }],
+      stack: { pascal: "Stack", kebab: "stack" },
       outputFile: "output",
       outputDir: "./cdk",
     };
@@ -56,9 +56,11 @@ describe("The AppBuilder class", () => {
       expect(codemaker._codemaker.line).toHaveBeenCalledWith(
         `const app = new App();`
       );
-      expect(codemaker._codemaker.line).toHaveBeenNthCalledWith(
-        6,
-        `new Stack(app, "Stack", { });`
+      expect(codemaker._codemaker.line).toHaveBeenCalledWith(
+        `const cloudFormationStackName = process.env.GU_CFN_STACK_NAME;`
+      );
+      expect(codemaker._codemaker.line).toHaveBeenCalledWith(
+        `new App(app, "App", { stack: "stack", cloudFormationStackName });`
       );
     });
   });

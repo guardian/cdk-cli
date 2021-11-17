@@ -23,7 +23,7 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: {
+      appName: {
         pascal: "",
         kebab: "",
       },
@@ -97,7 +97,7 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: {
+      appName: {
         kebab: "",
         pascal: "",
       },
@@ -159,7 +159,7 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: {
+      appName: {
         kebab: "",
         pascal: "",
       },
@@ -186,7 +186,7 @@ describe("The StackBuilder class", () => {
     const builder = new StackBuilder({
       outputDir: "",
       outputFile: "",
-      stackName: {
+      appName: {
         kebab: "",
         pascal: "",
       },
