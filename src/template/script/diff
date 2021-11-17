@@ -53,7 +53,7 @@ fi
 
 checkCredentials
 
-export GU_CDK_STACK_NAME=${STACK_NAME}
+export GU_CFN_STACK_NAME=${STACK_NAME}
 export AWS_PROFILE=${PROFILE}
 
 yarn diff

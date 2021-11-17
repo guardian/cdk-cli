@@ -15,7 +15,7 @@ export interface StackTemplate {
 interface StackBuilderProps {
   imports: Imports;
   template: StackTemplate;
-  stackName: Name;
+  appName: Name;
   outputFile: string;
   outputDir: string;
   comment?: string;
@@ -47,7 +47,7 @@ export class StackBuilder {
     this.config.imports.render(this.code);
 
     this.code.openBlock(
-      `export class ${this.config.stackName.pascal} extends GuStack`
+      `export class ${this.config.appName.pascal} extends GuStack`
     );
     this.code.openBlock(
       `constructor(scope: App, id: string, props: GuStackProps)`

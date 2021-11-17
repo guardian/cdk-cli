@@ -2,19 +2,10 @@ import { CodeMaker } from "codemaker";
 import type { Imports } from "./imports";
 import type { Name } from "./utils";
 
-export interface StackProps {
-  name: Name;
-}
-
-export interface AppTemplate {
-  name: string;
-  stacks: StackProps[];
-}
-
 interface AppBuilderProps {
   imports: Imports;
   appName: Name;
-  stacks: StackProps[];
+  stack: Name;
   outputFile: string;
   outputDir: string;
   comment?: string;
@@ -44,15 +35,13 @@ export class AppBuilder {
 
     this.code.line("const app = new App();");
 
-    this.config.stacks.forEach((stack) => {
-      this.code.line(`//  TODO: Add stack name
-//   e.g. { stack: "SomeStack" }`);
-      this.code.line(
-        `new ${stack.name.pascal}(app, "${stack.name.pascal}", {${
-          this.config.migrated ? ", migratedFromCloudFormation: true" : ""
-        } });`
-      );
-    });
+    this.code.line(
+      "const cloudFormationStackName = process.env.GU_CFN_STACK_NAME;"
+    );
+
+    this.code.line(
+      `new ${this.config.appName.pascal}(app, "${this.config.appName.pascal}", { stack: "${this.config.stack.kebab}", cloudFormationStackName });`
+    );
 
     this.code.closeFile(this.config.outputFile);
     await this.code.save(this.config.outputDir);

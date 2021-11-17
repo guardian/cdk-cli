@@ -40,8 +40,8 @@ describe("The NewCommand class", () => {
     test("pulls outs computed values correctly", () => {
       expect(NewCommand.getConfig(args)).toMatchObject({
         appPath: `/path/to/output/bin/app.ts`,
-        stackPath: `/path/to/output/lib/stack-name.ts`,
-        testPath: `/path/to/output/lib/stack-name.test.ts`,
+        stackPath: `/path/to/output/lib/app.ts`,
+        testPath: `/path/to/output/lib/app.test.ts`,
       });
     });
 
@@ -53,8 +53,8 @@ describe("The NewCommand class", () => {
         })
       ).toMatchObject({
         appPath: `/path/to/output/bin/app.ts`,
-        stackPath: `/path/to/output/lib/app/stack-name.ts`,
-        testPath: `/path/to/output/lib/app/stack-name.test.ts`,
+        stackPath: `/path/to/output/lib/app/app.ts`,
+        testPath: `/path/to/output/lib/app/app.test.ts`,
       });
     });
   });

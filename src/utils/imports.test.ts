@@ -264,11 +264,7 @@ describe("The newStackImports function", () => {
 
 describe("The newAppImports function", () => {
   test("adds the correct initial imports", () => {
-    const imports = newAppImports(
-      { kebab: "stack", pascal: "Stack" },
-      { kebab: "app", pascal: "App" },
-      false
-    );
+    const imports = newAppImports({ kebab: "app", pascal: "App" }, false);
     expect(imports.imports["@aws-cdk/core"]).toEqual({
       types: [],
       components: ["App"],
@@ -282,26 +278,18 @@ describe("The newAppImports function", () => {
   });
 
   test("adds the correct stack import when not multiapp", () => {
-    const imports = newAppImports(
-      { pascal: "StackName", kebab: "stack-name" },
-      { pascal: "App", kebab: "app" },
-      false
-    );
-    expect(imports.imports["../lib/stack-name"]).toEqual({
+    const imports = newAppImports({ pascal: "App", kebab: "app" }, false);
+    expect(imports.imports["../lib/app"]).toEqual({
       types: [],
-      components: ["StackName"],
+      components: ["App"],
     });
   });
 
   test("adds the correct stack import when multiapp", () => {
-    const imports = newAppImports(
-      { pascal: "StackName", kebab: "stack-name" },
-      { pascal: "App", kebab: "app" },
-      true
-    );
-    expect(imports.imports["../lib/app/stack-name"]).toEqual({
+    const imports = newAppImports({ pascal: "App", kebab: "app" }, true);
+    expect(imports.imports["../lib/app/app"]).toEqual({
       types: [],
-      components: ["StackName"],
+      components: ["App"],
     });
   });
 });
