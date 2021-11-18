@@ -11,14 +11,12 @@ describe("The NewCommand class", () => {
     });
 
     const args = {
-      args: {
-        output: "/path/to/output",
-        app: "App",
-        stack: "StackName",
-      },
       flags: {
         "multi-app": false,
         init: false,
+        output: "/path/to/output",
+        app: "App",
+        stack: "StackName",
       },
     };
 
@@ -48,8 +46,13 @@ describe("The NewCommand class", () => {
     test("pulls outs computed values correctly if multiApp is true", () => {
       expect(
         NewCommand.getConfig({
-          ...args,
-          flags: { "multi-app": true, init: false },
+          flags: {
+            "multi-app": true,
+            init: false,
+            output: "/path/to/output",
+            app: "App",
+            stack: "StackName",
+          },
         })
       ).toMatchObject({
         appPath: `/path/to/output/bin/app.ts`,

@@ -31,14 +31,11 @@ interface NewCommandConfig {
   init: boolean;
 }
 
-interface NewCommandArgs {
+interface NewCommandFlags {
+  "multi-app": boolean;
   output: string;
   app: string;
   stack: string;
-}
-
-interface NewCommandFlags {
-  "multi-app": boolean;
   init: boolean;
 }
 
@@ -51,32 +48,27 @@ export class NewCommand extends Command {
     "multi-app": flags.boolean({
       default: false,
       description:
-        "create the stack files within sub directories as the project defines multiple apps",
+        "Create the stack files within sub directories as the project defines multiple apps (defaults to false)",
     }),
     init: flags.boolean({
-      default: false,
+      default: true,
       description:
-        "create the cdk directory before building the app and stack files",
+        "Create the cdk directory before building the app and stack files (defaults to true)",
     }),
-  };
-
-  static args = [
-    {
-      name: "output",
+    output: flags.string({
       required: true,
       description: "The CDK directory to create the new files in",
-    },
-    {
-      name: "app",
+    }),
+    app: flags.string({
       required: true,
-      description: "A name to give the app",
-    },
-    {
-      name: "stack",
+      description: "The name of your application e.g. Amigo",
+    }),
+    stack: flags.string({
       required: true,
-      description: "A name to give the stack",
-    },
-  ];
+      description:
+        "The Guardian stack being used (as defined in your riff-raff.yaml). This will be applied as a tag to all of your resources.",
+    }),
+  };
 
   stackImports = newStackImports();
 
@@ -84,16 +76,14 @@ export class NewCommand extends Command {
     Parameters: {},
   };
   static getConfig = ({
-    args,
     flags,
   }: {
-    args: NewCommandArgs;
     flags: NewCommandFlags;
   }): NewCommandConfig => {
-    const cdkDir = args.output;
-    const appName = pascalCase(args.app);
+    const cdkDir = flags.output;
+    const appName = pascalCase(flags.app);
     const kebabAppName = kebabCase(appName);
-    const stackName = pascalCase(args.stack);
+    const stackName = pascalCase(flags.stack);
     const kebabStackName = kebabCase(stackName);
 
     const config = {
