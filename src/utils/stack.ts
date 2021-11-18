@@ -49,7 +49,7 @@ export class StackBuilder {
       this.code.openBlock(`new CfnInclude(this, "YamlTemplate",`);
       this.code.line(`templateFile: yamlTemplateFilePath,`);
       this.code.openBlock("parameters:");
-      this.code.line(`Stage: this.getParam<GuStageParameter>("Stage"),`);
+      this.code.line(`Stage: GuStageParameter.getInstance(this),`);
 
       this.code.closeBlock("},");
       this.code.closeBlock("});");

@@ -259,8 +259,8 @@ describe("The newStackImports function", () => {
         types: ["App"],
       },
       "@guardian/cdk/lib/constructs/core": {
-        components: ["GuStack"],
-        types: ["GuStackProps", "GuStageParameter"],
+        components: ["GuStack", "GuStageParameter"],
+        types: ["GuStackProps"],
       },
       path: {
         components: ["join"],
