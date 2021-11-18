@@ -12,7 +12,7 @@ export class MockCodeMaker {
     save: jest.fn(),
   };
 
-  codemaker = (this._codemaker as unknown) as CodeMaker;
+  codemaker = this._codemaker as unknown as CodeMaker;
 
   clear(): void {
     Object.keys(this._codemaker).forEach((key) =>
