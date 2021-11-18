@@ -67,18 +67,24 @@ USAGE
   $ cdk-cli new
 
 OPTIONS
-  -h, --help       show CLI help
-  -v, --version    show CLI version
-  --app=app        (required) The name of your application e.g. Amigo
-  --init           Create the cdk directory before building the app and stack files (defaults to true)
+  -h, --help                                       show CLI help
+  -v, --version                                    show CLI version
+  --app=app                                        (required) The name of your application e.g. Amigo
 
-  --multi-app      Create the stack files within sub directories as the project defines multiple apps (defaults to
-                   false)
+  --init                                           Create the cdk directory before building the app and stack files
+                                                   (defaults to true)
 
-  --output=output  (required) The CDK directory to create the new files in
+  --multi-app                                      Create the stack files within sub directories as the project defines
+                                                   multiple apps (defaults to false)
 
-  --stack=stack    (required) The Guardian stack being used (as defined in your riff-raff.yaml). This will be applied as
-                   a tag to all of your resources.
+  --output=output                                  [default: /Users/akash_askoolum/code/cdk-cli/src/commands/cdk] The
+                                                   CDK directory to create the new files in
+
+  --stack=stack                                    (required) The Guardian stack being used (as defined in your
+                                                   riff-raff.yaml). This will be applied as a tag to all of your
+                                                   resources.
+
+  --yaml-template-location=yaml-template-location  Path to the YAML CloudFormation template
 ```
 
 _See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v1.2.0/src/commands/new.ts)_

@@ -250,13 +250,21 @@ describe("The newStackImports function", () => {
     const imports = newStackImports();
 
     expect(imports.imports).toEqual({
-      "@guardian/cdk/lib/constructs/core": {
-        types: ["GuStackProps"],
-        components: ["GuStack"],
+      "@aws-cdk/cloudformation-include": {
+        components: ["CfnInclude"],
+        types: [],
       },
       "@aws-cdk/core": {
-        types: ["App"],
         components: [],
+        types: ["App"],
+      },
+      "@guardian/cdk/lib/constructs/core": {
+        components: ["GuStack"],
+        types: ["GuStackProps", "GuStageParameter"],
+      },
+      path: {
+        components: ["join"],
+        types: [],
       },
     });
   });
