@@ -27,7 +27,7 @@ $ npm install -g @guardian/cdk-cli
 $ cdk-cli COMMAND
 running command...
 $ cdk-cli (-v|--version|version)
-@guardian/cdk-cli/1.2.0 darwin-x64 node-v14.18.0
+@guardian/cdk-cli/2.0.0 darwin-x64 node-v14.18.0
 $ cdk-cli --help [COMMAND]
 USAGE
   $ cdk-cli COMMAND
@@ -84,7 +84,7 @@ OPTIONS
   --yaml-template-location=yaml-template-location  Path to the YAML CloudFormation template
 ```
 
-_See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v1.2.0/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/guardian/cdk-cli/blob/v2.0.0/src/commands/new.ts)_
 <!-- commandsstop -->
 
 ## Development
