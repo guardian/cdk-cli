@@ -1,5 +1,5 @@
-import { MockCodeMaker } from "../../test/utils/codemaker";
 import { AppBuilder } from "./app";
+import { MockCodeMaker } from "./codemaker";
 import { Imports } from "./imports";
 
 describe("The AppBuilder class", () => {

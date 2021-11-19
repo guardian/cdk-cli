@@ -81,13 +81,21 @@ export class Imports {
 
 export const newStackImports = (): Imports => {
   return new Imports({
-    "@guardian/cdk/lib/constructs/core": {
-      types: ["GuStackProps"],
-      components: ["GuStack"],
+    path: {
+      types: [],
+      components: ["join"],
+    },
+    "@aws-cdk/cloudformation-include": {
+      types: [],
+      components: ["CfnInclude"],
     },
     "@aws-cdk/core": {
       types: ["App"],
       components: [],
+    },
+    "@guardian/cdk/lib/constructs/core": {
+      types: ["GuStackProps"],
+      components: ["GuStack", "GuStageParameter"],
     },
   });
 };
