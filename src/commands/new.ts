@@ -1,4 +1,4 @@
-import path, { basename, dirname } from "path";
+import { basename, dirname, join } from "path";
 import { Command, flags } from "@oclif/command";
 import chalk from "chalk";
 import cli from "cli-ux";
@@ -6,6 +6,7 @@ import kebabCase from "lodash.kebabcase";
 import { constructApp } from "../utils/app";
 import { checkPathDoesNotExist, checkPathExists } from "../utils/args";
 import { execute } from "../utils/exec";
+import { gitRootOrCwd } from "../utils/git";
 import {
   newAppImports,
   newStackImports,
@@ -31,7 +32,6 @@ interface NewCommandConfig {
 
 interface NewCommandFlags {
   "multi-app": boolean;
-  output: string;
   app: string;
   stack: string;
   init: boolean;
@@ -54,11 +54,6 @@ export class NewCommand extends Command {
       description:
         "Create the cdk directory before building the app and stack files (defaults to true)",
     }),
-    output: flags.string({
-      required: false,
-      default: path.join(__dirname, "cdk"),
-      description: "The CDK directory to create the new files in",
-    }),
     app: flags.string({
       required: true,
       description: "The name of your application e.g. Amigo",
@@ -76,12 +71,12 @@ export class NewCommand extends Command {
 
   stackImports = newStackImports();
 
-  static getConfig = ({
-    flags,
-  }: {
-    flags: NewCommandFlags;
-  }): NewCommandConfig => {
-    const cdkDir = flags.output;
+  static getConfig = async (
+    flags: NewCommandFlags
+  ): Promise<NewCommandConfig> => {
+    const rootDir = await gitRootOrCwd();
+    const cdkDir = join(rootDir, "/cdk");
+
     const appName = pascalCase(flags.app);
     const kebabAppName = kebabCase(appName);
     const stackName = pascalCase(flags.stack);
@@ -129,7 +124,7 @@ export class NewCommand extends Command {
   async run(): Promise<void> {
     this.log("Starting CDK generator");
 
-    const config = NewCommand.getConfig(this.parse(NewCommand));
+    const config = await NewCommand.getConfig(this.parse(NewCommand).flags);
 
     if (config.init) {
       buildDirectory({ outputDir: config.cdkDir }, this);

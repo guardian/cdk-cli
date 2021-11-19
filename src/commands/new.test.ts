@@ -1,3 +1,4 @@
+import path from "path";
 import { NewCommand } from "./new";
 
 describe("The NewCommand class", () => {
@@ -11,18 +12,17 @@ describe("The NewCommand class", () => {
     });
 
     const args = {
-      flags: {
-        "multi-app": false,
-        init: false,
-        output: "/path/to/output",
-        app: "App",
-        stack: "StackName",
-      },
+      "multi-app": false,
+      init: false,
+      app: "App",
+      stack: "StackName",
     };
 
-    test("pulls outs direct args correctly", () => {
-      expect(NewCommand.getConfig(args)).toMatchObject({
-        cdkDir: "/path/to/output",
+    const repoRoot = path.join(__dirname, "../..");
+
+    test("pulls outs direct args correctly", async () => {
+      expect(await NewCommand.getConfig(args)).toMatchObject({
+        cdkDir: path.join(repoRoot, "cdk"),
         multiApp: false,
         appName: {
           pascal: "App",
@@ -35,29 +35,26 @@ describe("The NewCommand class", () => {
       });
     });
 
-    test("pulls outs computed values correctly", () => {
-      expect(NewCommand.getConfig(args)).toMatchObject({
-        appPath: `/path/to/output/bin/app.ts`,
-        stackPath: `/path/to/output/lib/app.ts`,
-        testPath: `/path/to/output/lib/app.test.ts`,
+    test("pulls outs computed values correctly", async () => {
+      expect(await NewCommand.getConfig(args)).toMatchObject({
+        appPath: path.join(repoRoot, "cdk", "bin", "app.ts"),
+        stackPath: path.join(repoRoot, "cdk", "lib", "app.ts"),
+        testPath: path.join(repoRoot, "cdk", "lib", "app.test.ts"),
       });
     });
 
-    test("pulls outs computed values correctly if multiApp is true", () => {
+    test("pulls outs computed values correctly if multiApp is true", async () => {
       expect(
-        NewCommand.getConfig({
-          flags: {
-            "multi-app": true,
-            init: false,
-            output: "/path/to/output",
-            app: "App",
-            stack: "StackName",
-          },
+        await NewCommand.getConfig({
+          "multi-app": true,
+          init: false,
+          app: "App",
+          stack: "StackName",
         })
       ).toMatchObject({
-        appPath: `/path/to/output/bin/app.ts`,
-        stackPath: `/path/to/output/lib/app/app.ts`,
-        testPath: `/path/to/output/lib/app/app.test.ts`,
+        appPath: path.join(repoRoot, "cdk", "bin", "app.ts"),
+        stackPath: path.join(repoRoot, "cdk", "lib", "app", "app.ts"),
+        testPath: path.join(repoRoot, "cdk", "lib", "app", "app.test.ts"),
       });
     });
   });

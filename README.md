@@ -77,9 +77,6 @@ OPTIONS
   --multi-app                                      Create the stack files within sub directories as the project defines
                                                    multiple apps (defaults to false)
 
-  --output=output                                  [default: /Users/akash_askoolum/code/cdk-cli/src/commands/cdk] The
-                                                   CDK directory to create the new files in
-
   --stack=stack                                    (required) The Guardian stack being used (as defined in your
                                                    riff-raff.yaml). This will be applied as a tag to all of your
                                                    resources.
