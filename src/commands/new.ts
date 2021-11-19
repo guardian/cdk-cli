@@ -200,5 +200,13 @@ export class NewCommand extends Command {
       cwd: config.cdkDir,
     });
     this.log(tree);
+
+    this.log("Project successfully created! Next steps:");
+
+    [
+      "Run ./script/diff to confirm there are no destructive changes (there should only be tag additions)",
+      "Update the repository's CI configuration to run ./script/ci",
+      "Raise a PR with these changes",
+    ].map((step) => this.log(`  - ${step}`));
   }
 }
