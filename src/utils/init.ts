@@ -42,8 +42,6 @@ export class ProjectBuilder {
     this.copyFiles(this.templateDir, this.config.outputDir);
 
     this.command.log("Success!");
-    // TODO: Can we do this here?
-    this.command.log("Run ./script/setup to install dependencies");
   }
 
   copyFiles(sourcePath: string, targetPath: string): void {

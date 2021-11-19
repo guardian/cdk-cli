@@ -1,8 +1,11 @@
 import path, { basename, dirname } from "path";
 import { Command, flags } from "@oclif/command";
+import chalk from "chalk";
+import cli from "cli-ux";
 import kebabCase from "lodash.kebabcase";
 import { constructApp } from "../utils/app";
 import { checkPathDoesNotExist, checkPathExists } from "../utils/args";
+import { execute } from "../utils/exec";
 import {
   newAppImports,
   newStackImports,
@@ -165,5 +168,45 @@ export class NewCommand extends Command {
       outputFile: basename(config.testPath),
       outputDir: dirname(config.stackPath),
     });
+
+    if (config.init) {
+      cli.action.start(
+        chalk.yellow("Installing dependencies. This may take a while...")
+      );
+      await execute("./script/setup", [], { cwd: config.cdkDir });
+      cli.action.stop();
+    }
+
+    // Run `eslint --fix` on the generated files instead of trying to generate code that completely satisfies the linter
+    await execute(
+      "./node_modules/.bin/eslint",
+      [
+        "lib/** bin/**",
+        "--ext .ts",
+        "--no-error-on-unmatched-pattern",
+        "--fix",
+      ],
+      {
+        cwd: config.cdkDir,
+      }
+    );
+
+    cli.action.start(chalk.yellow("Running tests..."));
+    await execute("./script/test", [], { cwd: config.cdkDir });
+    cli.action.stop();
+
+    this.log(chalk.green("Summarising the created files"));
+    const tree = await execute("tree", ["-I 'node_modules|cdk.out'"], {
+      cwd: config.cdkDir,
+    });
+    this.log(tree);
+
+    this.log("Project successfully created! Next steps:");
+
+    [
+      "Run ./script/diff to confirm there are no destructive changes (there should only be tag additions)",
+      "Update the repository's CI configuration to run ./script/ci",
+      "Raise a PR with these changes",
+    ].map((step) => this.log(`  - ${step}`));
   }
 }
